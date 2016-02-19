@@ -8,9 +8,7 @@
 
 /**
  * @{
- *
- * @file
- * @brief       Serial to serial communication
+ * @brief Uart to uart communication program
  *
  * @}
  */
