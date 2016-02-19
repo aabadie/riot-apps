@@ -24,6 +24,9 @@
 #include "periph/uart.h"
 
 #define UART_BUFSIZE        (128U)
+#define PC_UART 0
+#define BT_UART 1
+#define BAUDRATE (9600U)
 
 typedef struct {
   char rx_mem[UART_BUFSIZE];
@@ -45,24 +48,24 @@ int main(void)
   
   /* initialize ringbuffers and serial devices */
   /* UART0 : PC terminal */
-  ringbuffer_init(&(ctx[0].rx_buf), ctx[0].rx_mem, UART_BUFSIZE);
-  uart_init(0, (uint32_t)9600, rx_cb, (void *)&(ctx[0].rx_buf));
+  ringbuffer_init(&(ctx[PC_UART].rx_buf), ctx[PC_UART].rx_mem, UART_BUFSIZE);
+  uart_init(PC_UART, BAUDRATE, rx_cb, (void *)&(ctx[PC_UART].rx_buf));
 	
   /* UART2 : BT terminal */
-  ringbuffer_init(&(ctx[2].rx_buf), ctx[2].rx_mem, UART_BUFSIZE);
-  uart_init(2, (uint32_t)9600, rx_cb, (void *)&(ctx[2].rx_buf));
-	
+  ringbuffer_init(&(ctx[BT_UART].rx_buf), ctx[BT_UART].rx_mem, UART_BUFSIZE);
+  uart_init(BT_UART, BAUDRATE, rx_cb, (void *)&(ctx[BT_UART].rx_buf));
+
   for (;;) {
-	while (ctx[2].rx_buf.avail) {
+	while (ctx[BT_UART].rx_buf.avail) {
 	  // We have data coming from UART2 => simply print on PC terminal
-	  int data = ringbuffer_get_one(&(ctx[2].rx_buf));
+	  int data = ringbuffer_get_one(&(ctx[BT_UART].rx_buf));
 	  printf("%c", (char)data);
 	}
 
-	while (ctx[0].rx_buf.avail) {
+	while (ctx[PC_UART].rx_buf.avail) {
 	  // We have data printed on the PC terminal => forward on UART2
-	  int data = ringbuffer_get_one(&(ctx[0].rx_buf));
-	  uart_write(2, (uint8_t*)&data, 1);
+	  int data = ringbuffer_get_one(&(ctx[PC_UART].rx_buf));
+	  uart_write(BT_UART, (uint8_t*)&data, 1);
 	}
   }
 	
