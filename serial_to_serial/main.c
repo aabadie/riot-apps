@@ -60,7 +60,7 @@ int main(void)
 	}
 
 	while (ctx[0].rx_buf.avail) {
-	  // We have data printed PC terminal => write them on UART2
+	  // We have data printed on the PC terminal => forward on UART2
 	  int data = ringbuffer_get_one(&(ctx[0].rx_buf));
 	  uart_write(2, (uint8_t*)&data, 1);
 	}
