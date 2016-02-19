@@ -21,7 +21,7 @@ There are a few package that needs to be installed on the Ubuntu developpement s
   1. Common packages
 
 ```bash
-sudo apt install build-essential g++-multilib screen
+sudo apt install build-essential g++-multilib gtkterm
 ```
 
   2. AVR MCU Family
@@ -70,5 +70,5 @@ This repository contains 2 self-documented sample applications:
 to use the build system and display terminal
 * ["Serial to serial"](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial) is a
 little more complex example showing how to forward messages from one UART interface to
-another UART interface. This example uses IPC and IRQ concepts of RIOT
+another UART interface. This example uses IPC and IRQ concepts of RIOT.
 
