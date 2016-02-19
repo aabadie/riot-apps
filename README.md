@@ -47,7 +47,7 @@ More information is available on the RIOT documentation : https://github.com/RIO
 
 ### Getting the code
 
-Here we suppose all is done in `~/work`.
+Here we suppose all is code is located in `~/work`.
 
 1. Clone RIOT code (or your fork)
 
@@ -62,4 +62,13 @@ $ git clone git@github.com:RIOT-OS/RIOT.git
 $ cd ~/work
 $ git clone git@github.com:aabadie/riot-apps.git
 ```
+
+### Samples
+
+This repository contains 2 self-documented sample applications:
+* The usual ["Hello World"](https://github.com/aabadie/riot-apps/tree/master/hello-world) shows how
+to use the build system and display terminal
+* ["Serial to serial"](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial) is a
+little more complex example showing how to forward messages from one UART interface to
+another UART interface. This example uses IPC and IRQ concepts of RIOT
 

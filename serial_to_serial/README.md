@@ -1,5 +1,4 @@
-Communicate between 2 UART interfaces
-=====================================
+## Communicate between 2 UART interfaces
 
 This is a basic example that shows a way to communicate between 2 UART interfaces.
 

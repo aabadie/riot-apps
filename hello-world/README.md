@@ -1,5 +1,4 @@
-Hello World!
-============
+## Hello World!
 
 This is a basic example how to use RIOT in your embedded application.
 It prints out the famous text `Hello World!`.
@@ -19,3 +18,34 @@ This example should foremost give you an overview how to use the Makefile system
 * The last line of your Makefile must be `include $(RIOTBASE)/Makefile.include`.
 
 The code itself may look like your usual *C* beginners hello-world example.
+
+### Building this example
+
+We assume you followed the prerequites explained [here](https://github.com/aabadie/riot-apps#prerequisites).
+
+* Plug your board on one of your USB.
+* Compile and flash:
+  * Let's do it in three steps first: build, flash and then start the serial terminal
+```bash
+$ cd ~/work/hello-world
+$ make RIOTBASE=~/work/RIOT BOARD=arduino-mega2560
+$ make RIOTBASE=~/work/RIOT BOARD=arduino-mega2560 flash
+$ make RIOTBASE=~/work/RIOT BOARD=arduino-meag2560 term
+```
+  * But all can be done with one command using multiple make targets:
+```bash
+$ cd ~/work/hello-world
+$ make RIOTBASE=~/work/RIOT BOARD=arduino-mega2560 flash term
+```
+* You should see in your terminal:
+```
+Building application "hello-world" for "arduino-mega2560" with MCU "atmega2560".
+
+.
+.
+.
+
+2016-02-19 16:49:35,607 - INFO # Hello World!
+2016-02-19 16:49:35,609 - INFO # You are running RIOT on a(n) arduino-mega2560 board.
+2016-02-19 16:49:35,610 - INFO # This board features a(n) atmega2560 MCU.
+```
