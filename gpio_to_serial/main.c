@@ -41,10 +41,10 @@ static bool status = 0;
 
 static void gpio_cb(void *pin)
 {
-    status = !status;
+    gpio_toggle(GPIO_PIN(GPIO_LED_PORT, GPIO_LED_PIN));
     printf("INT: external interrupt from pin %i\n", (int)pin);
     msg_t msg;
-    msg.content.value = (uint32_t)(status);
+    msg.content.value = (uint32_t)(gpio_read(GPIO_PIN(GPIO_LED_PORT, GPIO_LED_PIN)));
     msg_send(&msg, idle_thread_pid);
 }
 
@@ -79,18 +79,11 @@ int main(void)
 
     msg_t msg;
     for (;;) {
-	/* Next line blocks the loop until a message is received on the idle 
-	   thread */
-	msg_receive(&msg);
+	msg_receive(&msg); /* This line blocks the loop until a message is received. */
 	bool status = (bool)msg.content.value;
-	if (status) {
-	    gpio_set(GPIO_PIN(GPIO_LED_PORT, GPIO_LED_PIN));
-	} else {
-	    gpio_clear(GPIO_PIN(GPIO_LED_PORT, GPIO_LED_PIN));
-	}
-
 	uart_write(UART_INTERFACE,
-		   (uint8_t*)strcat("Button pressed, LED is now", status? "ON" : "OFF"), 1);
+		   (uint8_t*)strcat("Button pressed, LED is now ",
+				    status? "ON" : "OFF"), 1);
     }
     
     return 0;
