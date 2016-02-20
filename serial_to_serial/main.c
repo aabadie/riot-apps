@@ -30,52 +30,53 @@ static kernel_pid_t idle_thread_pid;
 
 static void rx_cb(void *uart, char c)
 {
-  /* A character was received on an UART interface and triggered
-  this callback via an interruption, we forward it via a message
-  to the idle thread. */
-  msg_t msg;
-  msg.type = (int)uart;
-  msg.content.value = (uint32_t)c;
-  msg_send(&msg, idle_thread_pid);
+    /* A character was received on an UART interface and triggered
+       this callback through an interruption, we forward it via a message
+       to the idle thread. */
+    msg_t msg;
+    msg.type = (int)uart;
+    msg.content.value = (uint32_t)c;
+    msg_send(&msg, idle_thread_pid);
 }
 
 int main(void)
 {
-  printf("Connection between 2 UART interfaces\n");
-  printf("====================================\n");
+    printf("Connection between 2 UART interfaces\n");
+    printf("====================================\n");
   
-  /* Initialize serial devices */
-  /* UART0 : PC terminal */
-  uart_init(PC_UART, BAUDRATE, rx_cb, (void *)PC_UART);
+    /* Initialize serial devices */
+    /* UART0 : PC terminal */
+    uart_init(PC_UART, BAUDRATE, rx_cb, (void *)PC_UART);
 	
-  /* UART2 : BT terminal */
-  uart_init(BT_UART, BAUDRATE, rx_cb, (void *)BT_UART);
+    /* UART2 : BT terminal */
+    uart_init(BT_UART, BAUDRATE, rx_cb, (void *)BT_UART);
 
-  /* Get Idle thread pid */
-  idle_thread_pid = thread_getpid();
+    /* Get Idle thread pid */
+    idle_thread_pid = thread_getpid();
   
-  /* Local variable containing the message exchanged between 
-  the 2 UART interfaces */
-  msg_t msg;
-  for (;;) {
-	/* Next line blocks the loop until a message is received on the idle thread */
+    /* Local variable containing the message exchanged between 
+       the 2 UART interfaces */
+    msg_t msg;
+    for (;;) {
+	/* Next line blocks the loop until a message is received on the idle 
+	   thread */
 	msg_receive(&msg);
 	int uart = msg.type; /* 'type' contains the UART interface number */
 	switch (uart) {
 	case PC_UART:
-	  /* Forward message to BT UART */
-	  uart_write(BT_UART, (uint8_t*)&(msg.content.value), 1);
-	  break;
+	    /* Forward message to BT UART */
+	    uart_write(BT_UART, (uint8_t*)&(msg.content.value), 1);
+	    break;
 	case BT_UART:
-	  /* Print message on PC terminal */
-	  printf("%c", (char)msg.content.value);
-	  break;
+	    /* Print message on PC terminal */
+	    printf("%c", (char)msg.content.value);
+	    break;
 	default:
-	  /* Should not happen */
-	  printf("Unknown UART interface %i", uart);
-	  break;
+	    /* Should not happen */
+	    printf("Unknown UART interface %i", uart);
+	    break;
 	}
-  }
+    }
 
-  return 0;
+    return 0;
 }
