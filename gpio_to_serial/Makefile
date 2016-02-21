@@ -7,7 +7,7 @@ BOARD ?= samr21-xpro
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../..
 
-USEMODULE+=xtimer
+USEMODULE += xtimer
 FEATURES_REQUIRED += periph_gpio
 FEATURES_REQUIRED += periph_uart
 
