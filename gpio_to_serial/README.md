@@ -22,7 +22,7 @@ board. It uses the on-board LED and Button for setup simplicity.
 
 1. Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-2. Follow the setup displayed above and plug the board to an USB port of your computer
+2. Plug the board to an USB port of your computer
 3. Build and flash:
 ```bash
 $ cd ~/work/gpio_to_serial
