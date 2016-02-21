@@ -20,19 +20,19 @@ board. It uses the on-board LED and Button for setup simplicity.
 
 ### Using this application
 
-1. Ensure you followed the
+* Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-2. Plug the board to an USB port of your computer
-3. Build and flash:
+* Plug the board to an USB port of your computer
+* Build and flash:
 ```bash
 $ cd ~/work/gpio_to_serial
 $ make RIOTBASE=~/work/RIOT flash
 ```
-4. Start a serial terminal application on your PC (assuming the board is
+* Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
 gtkterm -p /dev/ttyACM0 -s 9600 -b 8
 ```
-5. Press the on-board button : this toggles the LED status.
-6. Type some character in the serial terminal: each typed character toggles the
+* Press the on-board button : this toggles the LED status.
+* Type some character in the serial terminal: each typed character toggles the
    LED status

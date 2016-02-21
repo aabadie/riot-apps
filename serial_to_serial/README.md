@@ -25,22 +25,22 @@ the top-level [README](https://github.com/aabadie/riot-apps#sample-applications-
 
 ### Using this application
 
-1. Ensure you followed the
+* Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-2. Follow the setup displayed above and plug the board to an USB port of your computer
-3. Build and flash:
+* Follow the setup displayed above and plug the board to an USB port of your computer
+* Build and flash:
 ```bash
 $ cd ~/work/serial_to_serial
 $ make RIOTBASE=~/work/RIOT BOARD=arduino-due flash
 ```
-4. Start a serial terminal application on your PC (assuming the board is
+* Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
 gtkterm -p /dev/ttyACM0 -s 9600 -b 8
 ```
-5. Now you can communicate to the other serial Bluetooth interface (using `rfcomm` on Linux or
+* Now you can communicate to the other serial Bluetooth interface (using `rfcomm` on Linux or
 a bluetooth terminal application on an Android phone)
-6. You can also skip the bluetooth setup hell by using an USB to serial board
+* You can also skip the bluetooth setup hell by using an USB to serial board
 between the PC and the second UART interface.
 
 

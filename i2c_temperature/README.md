@@ -17,17 +17,17 @@ extension from atmel.
 
 ### Using this application
 
-1. Ensure you followed the
+* Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-2. Plug the board to an USB port of your computer
-3. Build and flash:
+* Plug the board to an USB port of your computer
+* Build and flash:
 ```bash
 $ cd ~/work/gpio_to_serial
 $ make RIOTBASE=~/work/RIOT flash
 ```
-4. Start a serial terminal application on your PC (assuming the board is
+* Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
 gtkterm -p /dev/ttyACM0 -s 115200 -b 8
 ```
-5. The temperature measured by the sensor is displayed every 1.5 second.
+* The temperature measured by the sensor is displayed every 1.5 second.
