@@ -81,12 +81,10 @@ int main(void)
     /* Get Idle thread pid */
     idle_thread_pid = thread_getpid();
     msg_t msg;
-    bool status;
     for (;;) {
 	msg_receive(&msg); /* This line blocks the loop until a message is 
 			      received. */
-	status = gpio_read(LED_GPIO);
-	printf("Message received, LED is %s", status? "ON" : "OFF");
+	printf("Message received, LED is %s", gpio_read(LED_GPIO)? "ON" : "OFF");
     }
     
     return 0;
