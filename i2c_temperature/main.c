@@ -25,13 +25,14 @@
 #include "periph_conf.h"
 #include "periph/i2c.h"
 
+/* I2C interface number */
 #define I2C_0 0
 
-#define BUFSIZE (128U)
+/* I2C temperature address on sensor */
+#define TEMP_ADDR  (0x48 | 0x07)
+
 /* set interval to 1.5 second */
 #define INTERVAL (1500000U)
-
-#define TEMP_ADDR  (0x48 | 0x07)
 
 int init_i2c(void)
 {
@@ -85,11 +86,9 @@ int main(void)
     }
     
     uint32_t last_wakeup = xtimer_now();
-    int temperature;
     while(1) {
         xtimer_usleep_until(&last_wakeup, INTERVAL);
-	temperature = read_temperature();
-	printf("Temperature: %i°C\r\n", temperature);
+	printf("Temperature: %i°C\r\n", read_temperature(););
 	last_wakeup = xtimer_now();
     }
 
