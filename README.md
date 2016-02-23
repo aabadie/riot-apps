@@ -21,25 +21,25 @@ There are a few package that needs to be installed on the Ubuntu developpement s
   1. Common packages
 
 ```bash
-sudo apt install build-essential g++-multilib gtkterm
+sudo apt install build-essential g++-multilib openocd gtkterm
 ```
 
   2. AVR MCU Family
 
 ```bash
-sudo apt install gcc-avr avr-libc binutils-avr
+sudo apt install gcc-avr gdb-avr avr-libc binutils-avr
 ```
 
   3. ARM MCU Family
 
 ```bash
-sudo apt install gcc-arm-none-eabi openocd binutils-arm-linux-gnueabi
+sudo apt install gcc-arm-none-eabi gdb-arm-none-abi binutils-arm-linux-gnueabi
 ```
 
   4. MSP430 MCU Family (but not tested yet)
 
 ```bash
-sudo apt install gcc-msp430 msp430-libc binutils-msp430
+sudo apt install gcc-msp430 mspdebug msp430-libc binutils-msp430
 ```
 
 More information is available on the RIOT documentation : https://github.com/RIOT-OS/RIOT/wiki/Introduction#compiling-riot
