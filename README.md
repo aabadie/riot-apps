@@ -71,6 +71,9 @@ to use the build system and display terminal
 * ["Serial to serial"](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial) is a
 little more complex example showing how messages can be forwared from one UART interface to
 another UART interface. This example uses IPC and IRQ concepts of RIOT.
+* ["Bluetooth module configuration tool"](https://github.com/aabadie/riot-apps/tree/master/bt_config) is a
+tool showing how to play with threads and the shell os RIOT-OS in order to
+configure a bluetooth module connected to one of the UART of a board. 
 * ["GPIO to serial"](https://github.com/aabadie/riot-apps/tree/master/gpio_to_serial) shows how
 to use the GPIO API. This application has only been tested on a SAMR21-xpro
 board and will require some adjustement to make it work on other boards (use

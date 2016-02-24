@@ -1,14 +1,10 @@
 ## RIOT-OS based tool for bluetooth module configuration
 
-Bluetooth modules available on the market generally needs to be configured
-before any usage. Indeed, ones has to change it's public name, set its mode to
-slave or master, give a password and change its serial speed.
-The goal is this sample application is to show how to use the shell module of
-RIOT-OS to achieve this bluetooth configuration initial steps.
-
-Note that you need at least 2 UART interfaces on your board to test it :
-* UART0: connected to a PC USB port (serial debug interface).
-* UART1: connected to the UART of the bluetooth module.
+Bluetooth modules available on the market generally need to be configured
+before one can start using them. Indeed, the public name, the mode (slave or
+master), the pin code password and serial speed have to be adapted most of the time.
+The goal of this sample application is to show how to use the shell module of
+RIOT-OS to achieve these bluetooth configuration initial steps.
 
 3 concepts of RIOT are illustrated here:
 * [Shell](http://riot-os.org/api/group__sys__shell.html)
@@ -16,6 +12,9 @@ Note that you need at least 2 UART interfaces on your board to test it :
 * [UART](http://riot-os.org/api/group__drivers__periph__uart.html#details)
 * [IRQ](http://riot-os.org/api/group__core__irq.html#details)
 
+Note that you need at least 2 UART interfaces on your board to test it :
+* UART0: connected to a PC USB port (serial debug interface) and used by the shell.
+* UART1: connected to the UART of the bluetooth module.
 
 ### Hardware setup
 
