@@ -84,7 +84,7 @@ int main(void)
     for (;;) {
 	msg_receive(&msg); /* This line blocks the loop until a message is 
 			      received. */
-	printf("Message received, LED is %s", gpio_read(LED_GPIO)? "ON" : "OFF");
+	printf("\rMessage received, LED is %s\n", !gpio_read(LED_GPIO)? "ON" : "OFF");
     }
     
     return 0;
