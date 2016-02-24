@@ -65,7 +65,7 @@ $ git clone git@github.com:aabadie/riot-apps.git
 
 ### Samples
 
-This repository contains 4 self-documented sample applications:
+This repository contains 5 self-documented sample applications:
 * The usual ["Hello World"](https://github.com/aabadie/riot-apps/tree/master/hello-world) shows how
 to use the build system and display terminal
 * ["Serial to serial"](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial) is a
@@ -78,4 +78,7 @@ different ports and pins).
 * ["I2C temperature"](https://github.com/aabadie/riot-apps/tree/master/i2c_temperature) shows how
 to use the I2C API to read the temperature on a sensor. The application is
 designed to work with a SAMR21-xpro and its Xplained extension, which provides
-the temperature sensor. 
+the temperature sensor.
+* ["I2C temperature 2"](https://github.com/aabadie/riot-apps/tree/master/i2c_temperature_2) which 
+is a variant of the previous one allowing to control on demand the read of the temperature
+sensor from the uart interface.
