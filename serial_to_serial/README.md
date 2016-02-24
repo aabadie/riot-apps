@@ -10,9 +10,9 @@ You need at least 2 UART interfaces on your board to test it :
 Both UARTs are initialized using a baudrate of 9600.
 
 3 concepts of RIOT are illustrated here:
-* IPC: http://riot-os.org/api/group__core__msg.html#details
-* UART: http://riot-os.org/api/group__drivers__periph__uart.html#details
-* IRQ: http://riot-os.org/api/group__core__irq.html#details
+* [IPC](http://riot-os.org/api/group__core__msg.html#details)
+* [UART](http://riot-os.org/api/group__drivers__periph__uart.html#details)
+* [IRQ](http://riot-os.org/api/group__core__irq.html#details)
 
 
 ### Hardware setup
