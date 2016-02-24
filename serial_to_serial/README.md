@@ -30,7 +30,7 @@ the top-level [README](https://github.com/aabadie/riot-apps#sample-applications-
 * Follow the setup displayed above and plug the board to an USB port of your computer
 * Build and flash:
 ```bash
-$ cd ~/work/serial_to_serial
+$ cd ~/work/i2c_temperature
 $ make RIOTBASE=~/work/RIOT BOARD=arduino-due flash
 ```
 * Start a serial terminal application on your PC (assuming the board is

@@ -24,7 +24,7 @@
 
 #define PC_UART 0
 #define BT_UART 1
-#define BAUDRATE (9600U)
+#define BAUDRATE (115200U)
 
 static kernel_pid_t idle_thread_pid;
 

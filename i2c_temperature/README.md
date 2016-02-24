@@ -19,10 +19,11 @@ extension from atmel.
 
 * Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
+* Plug the Io1-xplaned-pro extension on the board
 * Plug the board to an USB port of your computer
 * Build and flash:
 ```bash
-$ cd ~/work/gpio_to_serial
+$ cd ~/work/i2c_temperature
 $ make RIOTBASE=~/work/RIOT flash
 ```
 * Start a serial terminal application on your PC (assuming the board is
