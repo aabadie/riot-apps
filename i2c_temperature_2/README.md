@@ -6,8 +6,8 @@ temperature sensor. It is similar to
 read is triggered on demand from the debug serial interface.
 
 2 concepts of RIOT are illustrated here:
-* I2C : http://doc.riot-os.org/group__drivers__periph__i2c.html#details
-* UART : http://riot-os.org/api/group__drivers__periph__uart.html#details
+* [I2C](http://doc.riot-os.org/group__drivers__periph__i2c.html#details)
+* [UART](http://riot-os.org/api/group__drivers__periph__uart.html#details)
 
 ### Hardware setup
 

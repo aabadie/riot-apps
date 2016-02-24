@@ -6,10 +6,10 @@ by both a button and the UART interface.
 The UART is initialized using a baudrate of 9600.
 
 4 concepts of RIOT are illustrated here:
-* IPC: http://riot-os.org/api/group__core__msg.html#details
-* UART: http://riot-os.org/api/group__drivers__periph__uart.html#details
-* IRQ: http://riot-os.org/api/group__core__irq.html#details
-* GPIO: http://doc.riot-os.org/group__drivers__periph__gpio.html#details
+* [IPC](http://riot-os.org/api/group__core__msg.html#details)
+* [UART](http://riot-os.org/api/group__drivers__periph__uart.html#details)
+* [IRQ](http://riot-os.org/api/group__core__irq.html#details)
+* [GPIO](http://doc.riot-os.org/group__drivers__periph__gpio.html#details)
 
 
 ### Hardware setup

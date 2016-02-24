@@ -4,8 +4,8 @@ This example demonstrates how to use the I2C low-level API of RIOT by reading a
 temperature sensor.
 
 2 concepts of RIOT are illustrated here:
-* I2C : http://doc.riot-os.org/group__drivers__periph__i2c.html#details
-* Timers: http://doc.riot-os.org/group__sys__xtimer.html 
+* [I2C](http://doc.riot-os.org/group__drivers__periph__i2c.html#details)
+* [Timers](http://doc.riot-os.org/group__sys__xtimer.html )
 
 ### Hardware setup
 
