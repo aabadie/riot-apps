@@ -46,7 +46,7 @@ $ make RIOTBASE=~/work/RIOT BOARD=arduino-due flash
 * Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
-gtkterm -p /dev/ttyACM0 -s 115200 -b 8
+gtkterm -p /dev/ttyACM0 -s 115200 -e -b 8
 ```
 * In the RIOT-OS shell, type `help` to list the available commands.
 * By default the RN42 works at 115200 bps and the configuration mode is launched

@@ -29,6 +29,6 @@ $ make RIOTBASE=~/work/RIOT flash
 * Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
-gtkterm -p /dev/ttyACM0 -s 115200 -b 8
+gtkterm -p /dev/ttyACM0 -s 115200 -b 8 -e
 ```
 * The temperature measured by the sensor is displayed every 1.5 second.

@@ -36,7 +36,7 @@ $ make RIOTBASE=~/work/RIOT BOARD=arduino-due flash
 * Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
-gtkterm -p /dev/ttyACM0 -s 9600 -b 8
+gtkterm -p /dev/ttyACM0 -s 9600 -b 8 -e
 ```
 * Now you can communicate to the other serial Bluetooth interface (using `rfcomm` on Linux or
 a bluetooth terminal application on an Android phone)

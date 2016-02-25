@@ -31,7 +31,7 @@ $ make RIOTBASE=~/work/RIOT flash
 * Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
 ```bash
-gtkterm -p /dev/ttyACM0 -s 9600 -b 8
+gtkterm -p /dev/ttyACM0 -s 9600 -e -b 8
 ```
 * Press the on-board button : this toggles the LED status.
 * Type some character in the serial terminal: each typed character toggles the
