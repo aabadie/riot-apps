@@ -24,10 +24,12 @@ the top-level [README](https://github.com/aabadie/riot-apps#sample-applications-
 
 You can find more information on a RN42 module configuration and especially the commands
 required
-[here](https://eewiki.net/display/Wireless/Getting+Started+with+RN42+Bluetooth+Module#GettingStartedwithRN42BluetoothModule-RN42UARTCommands)
-The HC-05 module has also been tested and should work as
-well. [Here](http://www.linotux.ch/arduino/HC-0305_serial_module_AT_commamd_set_201104_revised.pdf)
-is a document explaining the set of commands to configure it.
+[here](https://eewiki.net/display/Wireless/Getting+Started+with+RN42+Bluetooth+Module#GettingStartedwithRN42BluetoothModule-RN42UARTCommands).
+
+The
+[HC-05](http://wiki.iteadstudio.com/Serial_Port_Bluetooth_Module_%28Master/Slave%29_:_HC-05)
+module has also been tested and should work as well (commands to configure it
+are also provided in the link).
 
 <img src="https://github.com/aabadie/riot-apps/blob/master/serial_to_serial/docs/uart_2_uart_arduino_due_bb.png" width="400">
 
@@ -48,23 +50,25 @@ gtkterm -p /dev/ttyACM0 -s 115200 -b 8
 ```
 * In the RIOT-OS shell, type `help` to list the available commands.
 * By default the RN42 works at 115200 bps and the configuration mode is launched
-with the `$$$` string. Simply use the following command to switch the module in
+with the `$$$` string. Simply use `init` following command to switch the module in
 config mode:
 ```bash
-> start 115200 $$$
+> init 115200 $$$
 ```
-* Then, you can list and change some settings, for example:
+* Then, you can list and change some settings using the `send` command:
 ```bash
-# show the list of settings:
+# show the list of basic settings:
 > send D
+# show the list of advanced settings:
+> send E
 # set a new name:
 > send SN,<new_name>
 ```
-* Once done, the module needs to be rebooted (some settings require this):
+* Once done, the module needs to be rebooted (some settings change may require this):
 ```bash
 > send R,1
 ```
-* If you just want to quit the the configuration mode:
+* If you just want to quit the configuration mode:
 ```bash
 > send ---
 ```

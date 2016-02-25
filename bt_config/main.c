@@ -105,8 +105,8 @@ static int cmd_send(int argc, char **argv)
 }
 
 static const shell_command_t shell_commands[] = {
-    { "init", "\r init: Start bluetooth module configuration mode\n", cmd_init },
-    { "send", "\r send: Send a command to the bluetooth module\r\n", cmd_send },
+    { "init", "Start bluetooth module configuration mode", cmd_init },
+    { "send", "Send a command to the bluetooth module", cmd_send },
     { NULL, NULL, NULL }
 };
 
