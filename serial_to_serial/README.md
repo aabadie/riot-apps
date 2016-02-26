@@ -18,10 +18,22 @@ Both UARTs are initialized using a baudrate of 9600.
 ### Hardware setup
 
 This application has been tested with a [bluetooth 42N based board from
-Sparkfun](https://www.sparkfun.com/products/12577) and the boards mentioned in
-the top-level [README](https://github.com/aabadie/riot-apps#sample-applications-using-riot-os) of this repository.
+Sparkfun](https://www.sparkfun.com/products/12577). It also works with a HC-05
+bluetooth module but requires the pins to be adapted.
+
+
+* Arduino Due
 
 <img src="https://github.com/aabadie/riot-apps/blob/master/serial_to_serial/docs/uart_2_uart_arduino_due_bb.png" width="400">
+
+* Arduino Mega
+
+<img src="https://github.com/aabadie/riot-apps/blob/master/serial_to_serial/docs/uart_2_uart_arduino_mega2560_bb.png" width="400">
+
+* Samr21-xpro : use EXT1 pins. RX pin is PA22 and TX is PA23. (Note that RX of
+BT module goes to TX pin on the board, and vice versa)
+* mbed_lpc1768 : RX pin is n°9 and TX is n°10. (Note that RX of
+BT module goes to TX pin on the board, and vice versa)
 
 ### Using this application
 

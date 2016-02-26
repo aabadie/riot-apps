@@ -19,11 +19,8 @@ Note that you need at least 2 UART interfaces on your board to test it :
 ### Hardware setup
 
 This application has been tested with a [bluetooth 42N based module from
-Sparkfun](https://www.sparkfun.com/products/12577) and the boards mentioned in
-the top-level [README](https://github.com/aabadie/riot-apps#sample-applications-using-riot-os) of this repository.
-
-You can find more information on a RN42 module configuration and especially the commands
-required
+Sparkfun](https://www.sparkfun.com/products/12577). You can find more
+information on the RN42 module configuration and especially the commands required
 [here](https://eewiki.net/display/Wireless/Getting+Started+with+RN42+Bluetooth+Module#GettingStartedwithRN42BluetoothModule-RN42UARTCommands).
 
 The
@@ -31,7 +28,18 @@ The
 module has also been tested and should work as well (commands to configure it
 are also provided in the link).
 
+* Arduino Due
+
 <img src="https://github.com/aabadie/riot-apps/blob/master/serial_to_serial/docs/uart_2_uart_arduino_due_bb.png" width="400">
+
+* Arduino Mega
+
+<img src="https://github.com/aabadie/riot-apps/blob/master/serial_to_serial/docs/uart_2_uart_arduino_mega2560_bb.png" width="400">
+
+* Samr21-xpro : use EXT1 pins. RX pin is PA22 and TX is PA23. (Note that RX of
+BT module goes to TX pin on the board, and vice versa)
+* mbed_lpc1768 : RX pin is n°9 and TX is n°10. (Note that RX of
+BT module goes to TX pin on the board, and vice versa)
 
 ### Using this application
 

@@ -15,6 +15,7 @@ All samples applications here have been tested with the following setup:
   * ARM MCU Family:
     * [Arduino due](https://github.com/RIOT-OS/RIOT/wiki/Board%3A-Arduino-Due)
     * [Atmel SAMR21-xpro](https://github.com/RIOT-OS/RIOT/wiki/Board%3A-SAMR21-xpro)
+    * [mbed LPC1768](https://github.com/RIOT-OS/RIOT/wiki/Board%3A-mbed_lpc1768)
 
 There are a few package that needs to be installed on the Ubuntu developpement system.
 
