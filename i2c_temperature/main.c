@@ -26,7 +26,7 @@
 #include "periph/i2c.h"
 
 /* I2C interface number */
-#define I2C_0 0
+#define I2C_INTERFACE 0
 
 /* I2C temperature address on sensor */
 #define TEMP_ADDR  (0x48 | 0x07)
@@ -34,9 +34,9 @@
 /* set interval to 1.5 second */
 #define INTERVAL (1500000U)
 
-int init_i2c(void)
+static int init_i2c(void)
 {
-    switch(i2c_init_master(I2C_0, I2C_SPEED_NORMAL)) {
+    switch(i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL)) {
     case -1:
 	puts("Error: Init: Given device not available\r\n");
         return 1;
@@ -50,14 +50,14 @@ int init_i2c(void)
     }
 }
 
-int read_temperature(void)
+static int read_temperature(void)
 {
     uint16_t temperature;
     char buffer[2];
     buffer[0] = 0;
     buffer[1] = 0;
     
-    if (i2c_read_bytes(I2C_0, TEMP_ADDR, buffer, 2) < 0) {
+    if (i2c_read_bytes(I2C_INTERFACE, TEMP_ADDR, buffer, 2) < 0) {
         puts("Error: no bytes were read\r\n");
         return -1;
     } else {
@@ -88,7 +88,7 @@ int main(void)
     uint32_t last_wakeup = xtimer_now();
     while(1) {
         xtimer_usleep_until(&last_wakeup, INTERVAL);
-	printf("Temperature: %i°C\r\n", read_temperature(););
+	printf("Temperature: %i°C\r\n", read_temperature());
 	last_wakeup = xtimer_now();
     }
 

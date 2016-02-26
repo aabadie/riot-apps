@@ -43,7 +43,7 @@ int read_temperature(void)
     buffer[0] = 0;
     buffer[1] = 0;
     
-    if (i2c_read_bytes(I2C_0, T_ADDR, buffer, 2) < 0) {
+    if (i2c_read_bytes(I2C_INTERFACE, T_ADDR, buffer, 2) < 0) {
         puts("Error: no bytes were read\r\n");
         return -1;
     } else {
@@ -81,7 +81,7 @@ int main(void)
     }
     puts("UART interface initialized successfully\r\n");
 
-    if (i2c_init_master(I2C_0, I2C_SPEED_NORMAL) < 0) {
+    if (i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL) < 0) {
 	puts("Error while initializing I2C interface\r\n");
 	return 1;
     }
