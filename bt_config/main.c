@@ -86,7 +86,7 @@ static int cmd_init(int argc, char **argv)
         puts("Error: Unable to initialize bluetooth device\n");
         return 1;
     }
-    printf("Successfully initialized bluetooth device\r\n");
+    printf("Successfully initialized bluetooth device\n");
 
     uart_write(BT_UART, (uint8_t *)argv[2], strlen(argv[2]));
 
@@ -96,7 +96,7 @@ static int cmd_init(int argc, char **argv)
 static int cmd_send(int argc, char **argv)
 {   
     if (argc < 2) {
-        printf("usage: %s <command>\n", argv[0]);
+        printf("Usage: %s <command>\n", argv[0]);
         return 1;
     }
     
@@ -112,8 +112,8 @@ static const shell_command_t shell_commands[] = {
 
 int main(void)
 {
-    printf("\r\nBluetooth module configuration tool\r\n");
-    printf("===================================\r\n");
+    printf("\nBluetooth module configuration tool\n");
+    printf("===================================\n");
 
     /* start the printer thread */
     printer_pid = thread_create(printer_stack, sizeof(printer_stack),

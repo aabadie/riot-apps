@@ -44,7 +44,7 @@ int read_temperature(void)
     buffer[1] = 0;
     
     if (i2c_read_bytes(I2C_INTERFACE, T_ADDR, buffer, 2) < 0) {
-        puts("Error: no bytes were read\r\n");
+        puts("Error: no bytes read\n");
         return -1;
     } else {
 	uint16_t data = (buffer[0] << 8) | buffer[1];
@@ -64,7 +64,7 @@ int read_temperature(void)
 
 static void uart_cb(void *dev, char data)
 {
-    printf("UART Callback, read temperature\r\n");
+    printf("UART Callback, read temperature\n");
     msg_t msg;
     msg.content.value = (uint32_t)(NULL);
     msg_send(&msg, idle_thread_pid);
@@ -72,20 +72,20 @@ static void uart_cb(void *dev, char data)
 
 int main(void)
 {
-    puts("Control I2C sensor from UART interface\r\n");
+    puts("Control I2C sensor from UART interface\n");
     
     /* Initialize UART interface */
     if (uart_init(UART_INTERFACE, BAUDRATE, uart_cb, (void *)NULL) < 0) {
-	puts("Error while initializing UART interface\r\n");
+	puts("Error while initializing UART interface\n");
 	return 1;
     }
-    puts("UART interface initialized successfully\r\n");
+    puts("UART interface initialized successfully\n");
 
     if (i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL) < 0) {
-	puts("Error while initializing I2C interface\r\n");
+	puts("Error while initializing I2C interface\n");
 	return 1;
     }
-    puts("I2C interface initialized successfully\r\n");
+    puts("I2C interface initialized successfully\n");
     
     /* Get Idle thread pid */
     idle_thread_pid = thread_getpid();
@@ -93,7 +93,7 @@ int main(void)
     for (;;) {
 	msg_receive(&msg); /* This line blocks the loop until a message is 
 			      received. */
-	printf("Message received, temperature is %i°C\r\n", read_temperature());
+	printf("Message received, temperature is %i°C\n", read_temperature());
     }
     
     return 0;

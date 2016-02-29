@@ -38,13 +38,13 @@ static int init_i2c(void)
 {
     switch(i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL)) {
     case -1:
-	puts("Error: Init: Given device not available\r\n");
+	puts("Error: Init: Given device not available\n");
         return 1;
     case -2:
-	puts("Error: Init: Unsupported speed value\r\n");
+	puts("Error: Init: Unsupported speed value\n");
 	return 1;
     default:
-	printf("I2C_0 successfully initialized as master!\r\n");
+	printf("I2C_0 successfully initialized as master!\n");
 
     return 0;
     }
@@ -58,7 +58,7 @@ static int read_temperature(void)
     buffer[1] = 0;
     
     if (i2c_read_bytes(I2C_INTERFACE, TEMP_ADDR, buffer, 2) < 0) {
-        puts("Error: no bytes were read\r\n");
+        puts("Error: no bytes read\n");
         return -1;
     } else {
 	uint16_t data = (buffer[0] << 8) | buffer[1];
@@ -79,7 +79,7 @@ static int read_temperature(void)
 
 int main(void)
 {
-    puts("Read temperature sensor on Atmel Samr21 Xplained extension\r\n");
+    puts("Read temperature sensor on Atmel Samr21 Xplained extension\n");
 
     if (init_i2c() > 0) {
 	return 1;
@@ -88,7 +88,7 @@ int main(void)
     uint32_t last_wakeup = xtimer_now();
     while(1) {
         xtimer_usleep_until(&last_wakeup, INTERVAL);
-	printf("Temperature: %i°C\r\n", read_temperature());
+	printf("Temperature: %i°C\n", read_temperature());
 	last_wakeup = xtimer_now();
     }
 
