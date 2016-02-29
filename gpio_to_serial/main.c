@@ -24,12 +24,15 @@
 #include "board.h"
 #include "msg.h"
 #include "thread.h"
+#include "xtimer.h"
 #include "periph/gpio.h"
 #include "periph/uart.h"
 
 #define UART_INTERFACE 0
-#define BAUDRATE (9600U)
+#define BAUDRATE (115200U)
 
+
+static uint32_t last_press;
 static kernel_pid_t idle_thread_pid;
 
 static void uart_cb(void *dev, char data)
@@ -43,40 +46,45 @@ static void uart_cb(void *dev, char data)
 
 static void gpio_cb(void *pin)
 {
-    printf("\rGPIO Callback\n");
-    gpio_toggle(LED_GPIO);
-    msg_t msg;
-    msg.content.value = (uint32_t)(NULL);
-    msg_send(&msg, idle_thread_pid);
+    /* prevent bounce effect with on board button */
+    if (last_press + 100 < xtimer_now()) {
+	printf("GPIO Callback\n");
+	gpio_toggle(LED_GPIO);
+	msg_t msg;
+	msg.content.value = (uint32_t)(NULL);
+	msg_send(&msg, idle_thread_pid);
+	last_press = xtimer_now();
+    }
 }
 
 int main(void)
 {
-    puts("\rGPIO to UART sample application\n");
+    puts("GPIO to UART sample application\n");
 
     if (gpio_init(LED_GPIO, GPIO_DIR_OUT, GPIO_NOPULL) < 0) {
-        puts("\rError while initializing LED GPIO as output\n");
+        puts("Error while initializing LED GPIO as output\n");
         return 1;
     }
-    puts("\rLED GPIO initialized successfully as output\n");
+    puts("LED GPIO initialized successfully as output\n");
     /* Shutdown on board LED */
     gpio_set(LED_GPIO);
     
     if (gpio_init_int(BUTTON_GPIO, GPIO_PULLUP, GPIO_RISING, gpio_cb,
 		      (void *)BUTTON_GPIO) < 0) {
-        puts("\rError while initializing BUTTON GPIO as external interrupt\n");
+        puts("Error while initializing BUTTON GPIO as external interrupt\n");
         return 1;
     }
-    puts("\rBUTTON GPIO initialized successfully as external interrupt\n");
+    puts("BUTTON GPIO initialized successfully as external interrupt\n");
 
     
     /* Initialize UART interface */
     if (uart_init(UART_INTERFACE, BAUDRATE, uart_cb, (void *)NULL) < 0) {
-	puts("\rError while initializing UART interface\n");
+	puts("Error while initializing UART interface\n");
 	return 1;
     }
-    puts("\rUART interface initialized successfully\n");
-    
+    puts("UART interface initialized successfully\n");
+
+    last_press = xtimer_now();
     
     /* Get Idle thread pid */
     idle_thread_pid = thread_getpid();
@@ -84,7 +92,7 @@ int main(void)
     for (;;) {
 	msg_receive(&msg); /* This line blocks the loop until a message is 
 			      received. */
-	printf("\rMessage received, LED is %s\n", !gpio_read(LED_GPIO)? "ON" : "OFF");
+	printf("Message received, LED is %s\n", !gpio_read(LED_GPIO)? "ON" : "OFF");
     }
     
     return 0;
