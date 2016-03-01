@@ -86,3 +86,10 @@ the temperature sensor.
 * ["I2C temperature 2"](https://github.com/aabadie/riot-apps/tree/master/i2c_temperature_2) which 
 is a variant of the previous one allowing to control on demand the read of the temperature
 sensor from the uart interface.
+* ["Point to point network"](https://github.com/aabadie/riot-apps/tree/master/point_to_point_network)
+  which is an advanced sample application showing how to transfert data via udp
+  other a wireless connection. It reuses parts of the
+  [serial to serial](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial)
+  and [I2C temperature](https://github.com/aabadie/riot-apps/tree/master/i2c_temperature)
+  examples.
+  
