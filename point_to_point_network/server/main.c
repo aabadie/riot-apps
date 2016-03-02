@@ -57,15 +57,22 @@ static void *server_thread(void *args)
 
     /* Endless loop waiting for incoming packets */
     ipv6_addr_t src;
+    char src_str[IPV6_ADDR_MAX_STR_LEN];
+    char from[IPV6_ADDR_MAX_STR_LEN + 7];
+    strcpy(from, " from: ");
     size_t src_len = sizeof(ipv6_addr_t);
+    ipv6_addr_to_str(src_str, &src, IPV6_ADDR_MAX_STR_LEN);
+    strcat(from, src_str);
     for(;;) {
 	/* wait for incoming packets */
         conn_udp_recvfrom(&server_conn, server_buffer, sizeof(server_buffer), &src,
 			  &src_len, &SERVER_PORT);
-	
+	char full_message[sizeof(from) + sizeof(server_buffer)];
+	strcpy(full_message, server_buffer);
+	strcat(full_message, from);
 	/* Forward received message address to idle thread */
 	msg_t msg;
-	msg.content.value = (uint32_t)&server_buffer;
+	msg.content.value = (uint32_t)&full_message;
 	msg_send(&msg, idle_thread_pid);
     }
     return NULL;
@@ -94,11 +101,13 @@ int main(void)
     idle_thread_pid = thread_getpid();
 
     msg_t msg;
+    char * message = NULL;
     for (;;) {
 	uart_write(OUTPUT_UART, (uint8_t*)"\n", 1); /* hacky way of  */
 	msg_receive(&msg);
+	message = (char*)msg.content.value;
 	/* Forward message to OUTPUT UART, we have to know the length of the message */
-	uart_write(OUTPUT_UART, (uint8_t*)msg.content.value, 19);
+	uart_write(OUTPUT_UART, (uint8_t*)message, strlen(message));
     }
     
     /* should be never reached */
