@@ -19,13 +19,9 @@
 
 #include <stdio.h>
 #include "msg.h"
-#include "od.h"
 #include "net/af.h"
 #include "net/conn/udp.h"
-#include "net/gnrc.h"
 #include "net/gnrc/ipv6.h"
-#include "net/gnrc/udp.h"
-#include "net/gnrc/pktdump.h"
 #include "periph/uart.h"
 #include "thread.h"
 #include "xtimer.h"
@@ -103,7 +99,8 @@ int main(void)
     msg_t msg;
     char * message = NULL;
     for (;;) {
-	uart_write(OUTPUT_UART, (uint8_t*)"\n", 1); /* hacky way of  */
+	uart_write(OUTPUT_UART, (uint8_t*)"\n", 1); /* hacky way of unlocking
+						     * this loop*/
 	msg_receive(&msg);
 	message = (char*)msg.content.value;
 	/* Forward message to OUTPUT UART, we have to know the length of the message */
