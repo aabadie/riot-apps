@@ -38,7 +38,7 @@ static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
 static uint16_t SERVER_PORT=8000;
 
 static conn_udp_t server_conn;
-static char server_buffer[SERVER_BUFFER_SIZE];
+static char server_buffer[SERVER_BUFFER_SIZE] = { 0 };
 static char server_stack[THREAD_STACKSIZE_DEFAULT];
 static msg_t server_msg_queue[SERVER_MSG_QUEUE_SIZE];
 static kernel_pid_t idle_thread_pid;
@@ -54,7 +54,7 @@ static void *server_thread(void *args)
     /* Endless loop waiting for incoming packets */
     ipv6_addr_t src;
     char src_str[IPV6_ADDR_MAX_STR_LEN];
-    char from[IPV6_ADDR_MAX_STR_LEN + 7];
+    char from[IPV6_ADDR_MAX_STR_LEN + 7] = { 0 };
     strcpy(from, " from: ");
     size_t src_len = sizeof(ipv6_addr_t);
     ipv6_addr_to_str(src_str, &src, IPV6_ADDR_MAX_STR_LEN);
@@ -83,7 +83,7 @@ int main(void)
     /* we need a message queue for the idle thread in order to
      * receive potentially fast incoming networking packets */
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
-    puts("RIOT network stack example application");
+    puts("Temperature sensor network server");
 
     /* create the thread that will handle the udp server */
     thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,

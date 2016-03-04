@@ -37,7 +37,7 @@
 /* set interval to 5 seconds */
 #define INTERVAL (5000000U)
 
-#define MAX_MESSAGE_LENGTH (32U)
+#define MAX_MESSAGE_LENGTH 24
 
 const char * SERVER_IP = "fe80::5847:3c7c:4950:129a";
 const uint16_t SERVER_PORT = 8000;
@@ -73,7 +73,7 @@ static int send_data_to_server(char *data)
     ipv6_addr_from_str(&dst, SERVER_IP);
     
     /* send data to server */
-    conn_udp_sendto(data, sizeof(*data), &src, sizeof(src), (struct sockaddr *)&dst,
+    conn_udp_sendto(data, strlen(data), &src, sizeof(src), (struct sockaddr *)&dst,
 		    sizeof(dst), AF_INET6, (uint16_t)0, SERVER_PORT);
     
     return 0;
