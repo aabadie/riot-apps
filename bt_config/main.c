@@ -23,12 +23,10 @@
 #include "thread.h"
 #include "periph/uart.h"
 
-#define BT_UART 1
-
+#define BT_UART             (1)    /* use the second UART to communicate with BT module */
 #define SHELL_BUFSIZE       (128U)
 
 #define PRINTER_PRIO        (THREAD_PRIORITY_MAIN - 1)
-#define PRINTER_TYPE        (0xabcd)
 
 static kernel_pid_t printer_pid;
 static char printer_stack[THREAD_STACKSIZE_MAIN];
