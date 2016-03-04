@@ -25,21 +25,16 @@
 #include "periph_conf.h"
 #include "periph/i2c.h"
 
-/* I2C interface number */
-#define I2C_INTERFACE 0
-
-/* I2C temperature address on sensor */
-#define TEMP_ADDR  (0x48 | 0x07)
-
-/* set interval to 5 seconds */
-#define INTERVAL (5000000U)
+#define I2C_INTERFACE (0)           /* I2C interface number */
+#define SENSOR_ADDR   (0x48 | 0x07) /* I2C temperature address on sensor */
+#define INTERVAL      (5000000U)    /* set interval to 5 seconds */
 
 static int read_temperature(void)
 {
     uint16_t temperature;
     char buffer[2] = { 0 };
     
-    i2c_read_bytes(I2C_INTERFACE, TEMP_ADDR, buffer, 2);
+    i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2);
     uint16_t data = (buffer[0] << 8) | buffer[1];
     int8_t sign = 1;
     /* Check if negative and clear sign bit. */
@@ -57,7 +52,7 @@ static int read_temperature(void)
 
 int main(void)
 {
-    puts("Read temperature sensor on Atmel Samr21 IoXplained extension\n");
+    puts("Read Atmel SAMR21 Io-Xplained-Pro temperature sensor on I2C bus\n");
 
     /* Initialise the I2C serial interface as master */
     i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
