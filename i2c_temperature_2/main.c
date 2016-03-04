@@ -28,22 +28,20 @@
 #include "periph/uart.h"
 #include "periph/i2c.h"
 
-#define UART_INTERFACE 0
-#define BAUDRATE (115200U)
+#define UART_INTERFACE (0)       /* read and print on UART 0 */
+#define BAUDRATE       (115200U)
 
-#define I2C_INTERFACE 0
-#define T_ADDR (0x48|0x07)
+#define I2C_INTERFACE  (0)         /* I2C interface number */
+#define SENSOR_ADDR    (0x48|0x07) /* I2C temperature address on sensor */
 
 static kernel_pid_t idle_thread_pid;
 
 int read_temperature(void)
 {
     uint16_t temperature;
-    char buffer[2];
-    buffer[0] = 0;
-    buffer[1] = 0;
+    char buffer[2] = { 0 };
     
-    if (i2c_read_bytes(I2C_INTERFACE, T_ADDR, buffer, 2) < 0) {
+    if (i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2) < 0) {
         puts("Error: no bytes read\n");
         return -1;
     } else {
