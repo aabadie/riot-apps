@@ -22,22 +22,17 @@
 #include <stdlib.h>
 
 #include "xtimer.h"
+#include "board.h"
 #include "periph_conf.h"
 #include "periph/i2c.h"
 #include "net/af.h"
 #include "net/gnrc/ipv6.h"
 #include "net/conn/udp.h"
 
-/* I2C interface number */
-#define I2C_INTERFACE 0
-
-/* I2C temperature address on sensor */
-#define TEMP_ADDR  (0x48 | 0x07)
-
-/* set interval to 5 seconds */
-#define INTERVAL (5000000U)
-
-#define MAX_MESSAGE_LENGTH 24
+#define I2C_INTERFACE      (0)           /* I2C interface number */
+#define SENSOR_ADDR        (0x48 | 0x07) /* I2C temperature register address */
+#define INTERVAL           (5000000U)    /* set interval to 5 seconds */
+#define MAX_MESSAGE_LENGTH (24)
 
 const char * SERVER_IP = "fe80::5847:3c7c:4950:129a";
 const uint16_t SERVER_PORT = 8000;
@@ -48,7 +43,7 @@ static int read_temperature(void)
     char buffer[2] = { 0 };
 
     /* temperature is stored on 2 bytes */
-    i2c_read_bytes(I2C_INTERFACE, TEMP_ADDR, buffer, 2);
+    i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2);
 
     uint16_t data = (buffer[0] << 8) | buffer[1];
     int8_t sign = 1;
@@ -67,22 +62,31 @@ static int read_temperature(void)
 
 static int send_data_to_server(char *data)
 { 
-    ipv6_addr_t src = IPV6_ADDR_UNSPECIFIED, dst;
+    ipv6_addr_t dst;
     
     /* format destination address from string */
     ipv6_addr_from_str(&dst, SERVER_IP);
     
     /* send data to server */
-    conn_udp_sendto(data, strlen(data), &src, sizeof(src), (struct sockaddr *)&dst,
+    conn_udp_sendto(data, strlen(data), NULL, 0, (struct sockaddr *)&dst,
 		    sizeof(dst), AF_INET6, (uint16_t)0, SERVER_PORT);
     
     return 0;
+}
+
+static void blink_led(void)
+{
+    uint32_t now = xtimer_now();
+    LED_TOGGLE;
+    xtimer_usleep_until(&now, 100000);
+    LED_TOGGLE;
 }
 
 int main(void)
 {
     puts("Read temperature sensor on Atmel Samr21 Xplained extension\n");
 
+    /* intialize i2c interface as master  */
     i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
     
     uint32_t last_wakeup = xtimer_now();
@@ -90,6 +94,7 @@ int main(void)
     while(1) {
         xtimer_usleep_until(&last_wakeup, INTERVAL);
 	snprintf(message, sizeof(message), "Temperature: %i°C", read_temperature());
+	blink_led(); /* checking the node is alive with a blinking led  */
 	send_data_to_server(message);
 	last_wakeup = xtimer_now();
     }
