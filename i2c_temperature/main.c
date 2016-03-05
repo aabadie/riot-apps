@@ -33,7 +33,7 @@ static int read_temperature(void)
 {
     uint16_t temperature;
     char buffer[2] = { 0 };
-    
+    /* read temperature register on I2C bus */
     i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2);
     uint16_t data = (buffer[0] << 8) | buffer[1];
     int8_t sign = 1;
@@ -46,7 +46,6 @@ static int read_temperature(void)
     data = (data >> 5);
     temperature = data * sign * 0.125;
     
-    /* TODO convert to float */
     return (int)temperature;
 }
 

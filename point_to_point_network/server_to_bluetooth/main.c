@@ -26,14 +26,14 @@
 #include "thread.h"
 #include "xtimer.h"
 
-#define OUTPUT_UART           (0)
-#define BAUDRATE              (115200U)
-#define MAIN_QUEUE_SIZE       (8)
-#define SERVER_MSG_QUEUE_SIZE (32)
-#define SERVER_BUFFER_SIZE    (64)
-#define MAX_MESSAGE_SIZE      (64)
+#define UART_INTERFACE        (1)       /* RIOT UART interface number */
+#define UART_BAUDRATE         (115200U) /* UART interface speed */
+#define IDLE_MSG_QUEUE_SIZE   (8)       /* message queue size of the idle thread */
+#define SERVER_MSG_QUEUE_SIZE (32)      /* message queue size of the server thread */
+#define SERVER_BUFFER_SIZE    (32)      /* max size of the buffer where incoming data is stored  */
+#define MAX_MESSAGE_SIZE      (64)      /* max size of the forwarded message */
 
-static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
+static msg_t _main_msg_queue[IDLE_MSG_QUEUE_SIZE];
 static uint16_t SERVER_PORT=8000;
 static conn_udp_t server_conn;
 static char server_buffer[SERVER_BUFFER_SIZE];
@@ -49,12 +49,12 @@ static void *server_thread(void *args)
     /* Create udp incoming connection */
     conn_udp_create(&server_conn, &server_addr, sizeof(server_addr), AF_INET6, SERVER_PORT);
 
-    /* Endless loop waiting for incoming packets */
     ipv6_addr_t addr_src;
     char addr_src_str[IPV6_ADDR_MAX_STR_LEN] = { 0 };
     size_t addr_len = sizeof(ipv6_addr_t);
-
     char message[MAX_MESSAGE_SIZE] = { 0 };
+    
+    /* Endless loop waiting for incoming packets */
     for(;;) {
 	/* clear incoming data server buffer */
 	memset(server_buffer, 0, sizeof(server_buffer));
@@ -86,18 +86,18 @@ int main(void)
 {
     /* we need a message queue for the idle thread in order to
      * receive potentially fast incoming networking packets */
-    msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
+    msg_init_queue(_main_msg_queue, IDLE_MSG_QUEUE_SIZE);
 
     /* create the thread that will handle the udp server */
     thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,
 		  THREAD_CREATE_STACKTEST, server_thread, NULL, "IP server");
     
     /* Initializing output UART interface */
-    uart_init(OUTPUT_UART, BAUDRATE, rx_cb, (void *)OUTPUT_UART);
+    uart_init(UART_INTERFACE, UART_BAUDRATE, rx_cb, (void *)UART_INTERFACE);
 
     /* write a welcome message on the UART interface */
     const char * welcome = "Temperature sensor network server started\n";
-    uart_write(OUTPUT_UART, (uint8_t*)welcome ,strlen(welcome));
+    uart_write(UART_INTERFACE, (uint8_t*)welcome ,strlen(welcome));
     
     /* Get Idle thread pid */
     idle_thread_pid = thread_getpid();
@@ -110,7 +110,7 @@ int main(void)
 	message = (char*)msg.content.value;
 	
 	/* write the message on the UART */
-	uart_write(OUTPUT_UART, (uint8_t*)message, strlen(message));
+	uart_write(UART_INTERFACE, (uint8_t*)message, strlen(message));
 	
 	/* acknowledge the server thread */
 	msg_reply(&msg, NULL);

@@ -1,9 +1,16 @@
 ## 
 
 This example demonstrates how to use the I2C low-level API of RIOT by reading a
-temperature sensor and how to send by udp through a wireless interface this
-value to another node with a point to point network. The received packet is then
-forwarded to an UART interface.
+temperature sensor and how to send this value by udp through a wireless
+interface to a server node. The received packet is then forwarded by the server
+node to one of its UART interface making this node a router from 6LowPan to
+UART.
+Two implementations of the server node are provided by this example:
+* [Server to terminal](https://github.com/aabadie/riot-apps/tree/master/point_to_point_server/server_to_terminal):
+  messages received by the server node are forwarded to the debug console (UART 0)
+* [Server to bluetooth](https://github.com/aabadie/riot-apps/tree/master/point_to_point_server/server_to_bluetooth):
+  messages received by the server node are forwarded to UART 1 which is
+  connected to a Bluetooth module (it can also be a TTL to USB converter).
 
 4 concepts of RIOT are illustrated here:
 * [I2C](http://doc.riot-os.org/group__drivers__periph__i2c.html#details)
@@ -21,10 +28,11 @@ board. You also need the
 [Io1-xplained-pro](http://www.atmel.com/images/atmel-42078-io1-xplained-pro_user-guide.pdf)
 extension from atmel.
 
-You also need an UART device plugged on the second UART of the board that will
-be used as the udp server. For example you can use a TTL to USB device or a
-bluetooth device like the one used in the
-[serial to serial](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial)
+If you want to try the
+['Server to bluetooth'](https://github.com/aabadie/riot-apps/tree/master/point_to_point_server/server_to_bluetooth)
+example, you also need a Bluetooth module using UART and plugged on the second UART of the board
+that will be used as the udp server. For example you can use a bluetooth device
+like the one tried in [serial to serial](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial)
 sample application.
 * Plug __RX__ pin of the serial device to the TX pin of the board: __PA22__
 * Plug __TX__ pin of the serial device to the RX pin of the board: __PA23__
@@ -93,22 +101,23 @@ scope: local [multicast]
 ```
 * The server ip (v6) is __fe80::5847:3c7c:4950:129a__  (it's the line ending
   with scope: local, you should have a different value). In
-  *~/work/riot-apps/point_to_point_network/sensor_client/main.c*, replace the value
+  *~/work/riot-apps/point_to_point_network/client_with_sensor/main.c*, replace the value
   __SERVER_PORT__ with the on you just got with *ifconfig*.
-* Let's now flash the server board with our server application:
+* Let's now flash the server board with our server application
+(server_to_terminal or server_to_bluetooth):
 ```bash
-$ cd ~/work/riot-apps/point_to_point_network/server
+$ cd ~/work/riot-apps/point_to_point_network/server_to_bluetooth
 $ make RIOTBASE=~/work/RIOT BOARD=samr21-xpro SERIAL=ATML2127031800004658 flash
 ```
 * Let's now flash the client board with our sensor client application:
 ```bash
-$ cd ~/work/riot-apps/point_to_point_/sensor_client
+$ cd ~/work/riot-apps/point_to_point_/client_with_sensor
 $ make RIOTBASE=~/work/RIOT BOARD=samr21-xpro SERIAL=ATML2127031800004653 flash
 ```
 * Now all is in place. Simply connect to the UART device plugged on the server
   board (via bluetooth if it's a bluetooth device or using a terminal on the
   right tty if it's a tty to USB device. Note that this UART device should be
-  initialized at 115200 bps.
-  Should then see the temperature displayed !! We are on the way of the IoT, Woohoo :)
+  initialized at 115200 bps (value UART_BAUDRATE in the code).
+  You should now see the temperature messages displayed !! You are on the way of the IoT, Woohoo :)
   
   
