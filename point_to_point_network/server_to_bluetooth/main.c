@@ -65,7 +65,7 @@ static void *server_thread(void *args)
 	
 	/* build a nice message string */
 	ipv6_addr_to_str(addr_src_str, &addr_src, IPV6_ADDR_MAX_STR_LEN);
-	snprintf(message, sizeof(message), "%s from node %s\n", server_buffer, addr_src_str);
+	snprintf(message, sizeof(message), "%s from: %s\n", server_buffer, addr_src_str);
 
 	/* forward the message to the idle thread */
 	/* msg_send_receive blocks until it receives the idle thread

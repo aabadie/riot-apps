@@ -46,12 +46,12 @@ static void *server_thread(void *args)
     /* Create udp incoming connection */
     conn_udp_create(&server_conn, &server_addr, sizeof(server_addr), AF_INET6, SERVER_PORT);
 
-    /* Endless loop waiting for incoming packets */
     ipv6_addr_t addr_src;
     char addr_src_str[IPV6_ADDR_MAX_STR_LEN] = { 0 };
     size_t addr_len = sizeof(ipv6_addr_t);
-
     char message[MAX_MESSAGE_SIZE] = { 0 };
+    
+    /* Endless loop waiting for incoming packets */
     for(;;) {
 	/* clear incoming data server buffer */
 	memset(server_buffer, 0, sizeof(server_buffer));
@@ -62,7 +62,7 @@ static void *server_thread(void *args)
 	
 	/* build a nice message string */
 	ipv6_addr_to_str(addr_src_str, &addr_src, IPV6_ADDR_MAX_STR_LEN);
-	snprintf(message, sizeof(message), "%s from node %s\n", server_buffer, addr_src_str);
+	snprintf(message, sizeof(message), "%s from: %s\n", server_buffer, addr_src_str);
 
 	/* forward the message to the idle thread */
 	/* msg_send_receive blocks until it receives the idle thread

@@ -1,10 +1,8 @@
-APPLICATION = i2c_temperature_client
+APPLICATION = client_with_sensor
 
 # If no BOARD is found in the environment, use this default:
 BOARD ?= samr21-xpro
-
-# This has to be the absolute path to the RIOT base directory:
-RIOTBASE ?= $(CURDIR)/../..
+BOARD_WHITELIST := samr21-xpro
 
 USEMODULE += xtimer
 FEATURES_REQUIRED += periph_i2c
