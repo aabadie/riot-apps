@@ -91,6 +91,9 @@ int main(void)
      * receive potentially fast incoming networking packets */
     msg_init_queue(main_msg_queue, MAIN_MSG_QUEUE_SIZE);
 
+    /* Get main thread pid */
+    main_thread_pid = thread_getpid();
+    
     /* create the thread that will handle the udp server */
     int server_pid = thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,
 				   THREAD_CREATE_STACKTEST, server_thread, NULL, "IP server");
@@ -110,9 +113,6 @@ int main(void)
     /* write a welcome message on the UART interface */
     const char * welcome = "Temperature sensor network server started\n";
     uart_write(UART_INTERFACE, (uint8_t*)welcome ,strlen(welcome));
-    
-    /* Get main thread pid */
-    main_thread_pid = thread_getpid();
 
     msg_t msg;
     char * message = NULL;

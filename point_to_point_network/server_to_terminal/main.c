@@ -89,6 +89,9 @@ int main(void)
      * receive potentially fast incoming networking packets */
     msg_init_queue(main_msg_queue, MAIN_MSG_QUEUE_SIZE);
 
+    /* get main thread pid */
+    main_thread_pid = thread_getpid();
+    
     /* create the thread that will handle the udp server */
     int server_pid = thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,
 				   THREAD_CREATE_STACKTEST, server_thread, NULL, "IP server");
@@ -98,9 +101,6 @@ int main(void)
     else {
 	puts("Successfuly created server thread !\n");
     }
-    
-    /* get main thread pid */
-    main_thread_pid = thread_getpid();
 
     msg_t msg;
     char * message = NULL;
