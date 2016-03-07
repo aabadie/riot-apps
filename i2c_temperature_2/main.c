@@ -42,22 +42,23 @@ int read_temperature(void)
     char buffer[2] = { 0 };
     
     if (i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2) < 0) {
-        puts("Error: no bytes read\n");
+	printf("Error: cannot read at address %i on I2C interface %i\n",
+	       SENSOR_ADDR, I2C_INTERFACE);
         return -1;
-    } else {
-	uint16_t data = (buffer[0] << 8) | buffer[1];
-	int8_t sign = 1;
-	/* Check if negative and clear sign bit. */
-	if (data & (1 << 15)) {
-	    sign *= -1;
-	    data &= ~(1 << 15);
-	}
-	/* Convert to temperature */
-	data = (data >> 5);
-	temperature = data * sign * 0.125;
-
-        return (int)temperature;
     }
+
+    uint16_t data = (buffer[0] << 8) | buffer[1];
+    int8_t sign = 1;
+    /* Check if negative and clear sign bit. */
+    if (data & (1 << 15)) {
+	sign *= -1;
+	data &= ~(1 << 15);
+    }
+    /* Convert to temperature */
+    data = (data >> 5);
+    temperature = data * sign * 0.125;
+    
+    return (int)temperature;
 }
 
 static void uart_cb(void *dev, char data)
@@ -74,13 +75,13 @@ int main(void)
     
     /* Initialize UART interface */
     if (uart_init(UART_INTERFACE, BAUDRATE, uart_cb, (void *)NULL) < 0) {
-	puts("Error while initializing UART interface\n");
+	puts("Error: failed to initialize UART interface\n");
 	return 1;
     }
     puts("UART interface initialized successfully\n");
 
     if (i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL) < 0) {
-	puts("Error while initializing I2C interface\n");
+	puts("Error: failed to initialize I2C interface\n");
 	return 1;
     }
     puts("I2C interface initialized successfully\n");

@@ -35,10 +35,11 @@ static int read_temperature(void)
     char buffer[2] = { 0 };
     /* read temperature register on I2C bus */
     if (i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2) < 0) {
-	printf("Cannont read at address %i on I2C interface %i",
+	printf("Error: cannot read at address %i on I2C interface %i\n",
 	       SENSOR_ADDR, I2C_INTERFACE);
-	return 0;
+	return -1;
     }
+    
     uint16_t data = (buffer[0] << 8) | buffer[1];
     int8_t sign = 1;
     /* Check if negative and clear sign bit. */
@@ -60,11 +61,11 @@ int main(void)
     /* Initialise the I2C serial interface as master */
     int init = i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
     if (init == -1) {
-        puts("Error: Init: Given device not available");
+        puts("Error: Init: Given device not available\n");
         return 1;
     }
     else if (init == -2) {
-        puts("Error: Init: Unsupported speed value");
+        puts("Error: Init: Unsupported speed value\n");
         return 1;
     }
     else {
