@@ -33,7 +33,7 @@
 #define SERVER_BUFFER_SIZE    (32)      /* max size of the buffer where incoming data is stored  */
 #define MAX_MESSAGE_SIZE      (64)      /* max size of the forwarded message */
 
-static msg_t _main_msg_queue[MAIN_MSG_QUEUE_SIZE];
+static msg_t main_msg_queue[MAIN_MSG_QUEUE_SIZE];
 static uint16_t SERVER_PORT=8000;
 static conn_udp_t server_conn;
 static char server_buffer[SERVER_BUFFER_SIZE];
@@ -89,7 +89,7 @@ int main(void)
 {
     /* we need a message queue for the main thread in order to
      * receive potentially fast incoming networking packets */
-    msg_init_queue(_main_msg_queue, MAIN_MSG_QUEUE_SIZE);
+    msg_init_queue(main_msg_queue, MAIN_MSG_QUEUE_SIZE);
 
     /* create the thread that will handle the udp server */
     int server_pid = thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,
@@ -111,7 +111,7 @@ int main(void)
     const char * welcome = "Temperature sensor network server started\n";
     uart_write(UART_INTERFACE, (uint8_t*)welcome ,strlen(welcome));
     
-    /* Get Idle thread pid */
+    /* Get main thread pid */
     main_thread_pid = thread_getpid();
 
     msg_t msg;
