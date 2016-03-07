@@ -56,22 +56,7 @@ static int read_temperature(void)
     data = (data >> 5);
     temperature = data * sign * 0.125;
     
-    /* TODO convert to float */
     return (int)temperature;
-}
-
-static int send_data_to_server(char *data)
-{ 
-    ipv6_addr_t dst;
-    
-    /* format destination address from string */
-    ipv6_addr_from_str(&dst, SERVER_IP);
-    
-    /* send data to server */
-    conn_udp_sendto(data, strlen(data), NULL, 0, (struct sockaddr *)&dst,
-		    sizeof(dst), AF_INET6, (uint16_t)0, SERVER_PORT);
-    
-    return 0;
 }
 
 static void blink_led(void)
@@ -87,16 +72,43 @@ int main(void)
     puts("Read temperature sensor on Atmel Samr21 Xplained extension\n");
 
     /* intialize i2c interface as master  */
-    i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
+    int init = i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
+    if (init == -1) {
+        puts("Error: Init: Given device not available\n");
+        return 1;
+    }
+    else if (init == -2) {
+        puts("Error: Init: Unsupported speed value\n");
+        return 1;
+    }
+    else {
+        printf("I2C interface %i successfully initialized as master!\n", I2C_INTERFACE);
+    }
+
+    /* format destination address from string */
+    ipv6_addr_t dst;
+    if (ipv6_addr_from_str(&dst, SERVER_IP) == NULL) {
+	printf("Error: address not valid '%s'\n", SERVER_IP);
+	return 1;
+    }
     
     uint32_t last_wakeup = xtimer_now();
     char message[MAX_MESSAGE_LENGTH];
-    while(1) {
-        xtimer_usleep_until(&last_wakeup, INTERVAL);
+    for(;;) {
+	/* Format message to send to to server  */
 	snprintf(message, sizeof(message), "Temperature: %i°C", read_temperature());
-	blink_led(); /* checking the node is alive with a blinking led  */
-	send_data_to_server(message);
-	last_wakeup = xtimer_now();
+
+	/* checking the node is alive with a blinking led */
+	blink_led();
+
+	/* send data to server */
+	if (conn_udp_sendto(message, strlen(message), NULL, 0, (struct sockaddr *)&dst,
+			    sizeof(dst), AF_INET6, (uint16_t)0, SERVER_PORT) < 0) {
+	    printf("Error: couldn't send message '%s' to address '%s'\n", message, SERVER_IP);
+	}
+
+	/* wait 5 seconds */
+	xtimer_usleep_until(&last_wakeup, INTERVAL);
     }
 
     return 0;

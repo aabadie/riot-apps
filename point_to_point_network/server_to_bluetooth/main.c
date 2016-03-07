@@ -28,18 +28,18 @@
 
 #define UART_INTERFACE        (1)       /* RIOT UART interface number */
 #define UART_BAUDRATE         (115200U) /* UART interface speed */
-#define IDLE_MSG_QUEUE_SIZE   (8)       /* message queue size of the idle thread */
+#define MAIN_MSG_QUEUE_SIZE   (8)       /* message queue size of the main thread */
 #define SERVER_MSG_QUEUE_SIZE (32)      /* message queue size of the server thread */
 #define SERVER_BUFFER_SIZE    (32)      /* max size of the buffer where incoming data is stored  */
 #define MAX_MESSAGE_SIZE      (64)      /* max size of the forwarded message */
 
-static msg_t _main_msg_queue[IDLE_MSG_QUEUE_SIZE];
+static msg_t _main_msg_queue[MAIN_MSG_QUEUE_SIZE];
 static uint16_t SERVER_PORT=8000;
 static conn_udp_t server_conn;
 static char server_buffer[SERVER_BUFFER_SIZE];
 static char server_stack[THREAD_STACKSIZE_DEFAULT];
 static msg_t server_msg_queue[SERVER_MSG_QUEUE_SIZE];
-static kernel_pid_t idle_thread_pid;
+static kernel_pid_t main_thread_pid;
 
 static void *server_thread(void *args)
 {
@@ -64,15 +64,18 @@ static void *server_thread(void *args)
 			  &addr_len, &SERVER_PORT);
 	
 	/* build a nice message string */
-	ipv6_addr_to_str(addr_src_str, &addr_src, IPV6_ADDR_MAX_STR_LEN);
+	if (ipv6_addr_to_str(addr_src_str, &addr_src, IPV6_ADDR_MAX_STR_LEN) == NULL) {
+	    puts("Error: failed to convert source address to string");
+	    continue;
+	}
 	snprintf(message, sizeof(message), "%s from: %s\n", server_buffer, addr_src_str);
 
-	/* forward the message to the idle thread */
-	/* msg_send_receive blocks until it receives the idle thread
+	/* forward the message to the main thread */
+	/* msg_send_receive blocks until it receives the main thread
 	 * aknowledgment */
 	msg_t msg;
 	msg.content.value = (uint32_t)&message;
-	msg_send_receive(&msg, NULL, idle_thread_pid);
+	msg_send_receive(&msg, NULL, main_thread_pid);
     }
     
     return NULL;
@@ -84,23 +87,32 @@ static void rx_cb(void *uart, char c) {}
 
 int main(void)
 {
-    /* we need a message queue for the idle thread in order to
+    /* we need a message queue for the main thread in order to
      * receive potentially fast incoming networking packets */
-    msg_init_queue(_main_msg_queue, IDLE_MSG_QUEUE_SIZE);
+    msg_init_queue(_main_msg_queue, MAIN_MSG_QUEUE_SIZE);
 
     /* create the thread that will handle the udp server */
-    thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,
-		  THREAD_CREATE_STACKTEST, server_thread, NULL, "IP server");
+    int server_pid = thread_create(server_stack, sizeof(server_stack), THREAD_PRIORITY_MAIN - 1,
+				   THREAD_CREATE_STACKTEST, server_thread, NULL, "IP server");
+    if (server_pid == -EINVAL || server_pid == -EOVERFLOW) {
+	puts("Error: failed to create server thread, exiting\n");
+    }
+    else {
+	puts("Successfuly created server thread !\n");
+    }
     
     /* Initializing output UART interface */
-    uart_init(UART_INTERFACE, UART_BAUDRATE, rx_cb, (void *)UART_INTERFACE);
+    if(uart_init(UART_INTERFACE, UART_BAUDRATE, rx_cb, (void *)UART_INTERFACE) < 0) {
+	printf("Error: Failed to initialize UART interface '%i' at speed '%d'",
+	       UART_INTERFACE, UART_BAUDRATE);
+    }
 
     /* write a welcome message on the UART interface */
     const char * welcome = "Temperature sensor network server started\n";
     uart_write(UART_INTERFACE, (uint8_t*)welcome ,strlen(welcome));
     
     /* Get Idle thread pid */
-    idle_thread_pid = thread_getpid();
+    main_thread_pid = thread_getpid();
 
     msg_t msg;
     char * message = NULL;

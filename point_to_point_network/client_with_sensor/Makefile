@@ -11,8 +11,7 @@ FEATURES_REQUIRED += periph_i2c
 USEMODULE += gnrc_netif_default
 USEMODULE += auto_init_gnrc_netif
 # Specify the mandatory networking modules for IPv6 and UDP
-USEMODULE += gnrc_ipv6_router_default
-USEMODULE += gnrc_udp
+USEMODULE += gnrc_ipv6_default
 USEMODULE += gnrc_conn_udp
 
 # Comment this out to disable code in RIOT that does safety checking

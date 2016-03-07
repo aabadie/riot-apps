@@ -14,10 +14,8 @@ BOARD_WHITELIST := samr21-xpro
 USEMODULE += gnrc_netif_default
 USEMODULE += auto_init_gnrc_netif
 # Specify the mandatory networking modules for IPv6 and UDP
-USEMODULE += gnrc_icmpv6_echo
 USEMODULE += gnrc_ipv6_default
 USEMODULE += gnrc_conn_udp
-USEMODULE += ps
 
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the

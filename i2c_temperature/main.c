@@ -34,7 +34,11 @@ static int read_temperature(void)
     uint16_t temperature;
     char buffer[2] = { 0 };
     /* read temperature register on I2C bus */
-    i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2);
+    if (i2c_read_bytes(I2C_INTERFACE, SENSOR_ADDR, buffer, 2) < 0) {
+	printf("Cannont read at address %i on I2C interface %i",
+	       SENSOR_ADDR, I2C_INTERFACE);
+	return 0;
+    }
     uint16_t data = (buffer[0] << 8) | buffer[1];
     int8_t sign = 1;
     /* Check if negative and clear sign bit. */
@@ -54,13 +58,23 @@ int main(void)
     puts("Read Atmel SAMR21 Io-Xplained-Pro temperature sensor on I2C bus\n");
 
     /* Initialise the I2C serial interface as master */
-    i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
+    int init = i2c_init_master(I2C_INTERFACE, I2C_SPEED_NORMAL);
+    if (init == -1) {
+        puts("Error: Init: Given device not available");
+        return 1;
+    }
+    else if (init == -2) {
+        puts("Error: Init: Unsupported speed value");
+        return 1;
+    }
+    else {
+        printf("I2C interface %i successfully initialized as master!\n", I2C_INTERFACE);
+    }
     
     uint32_t last_wakeup = xtimer_now();
     for (;;) {
-        xtimer_usleep_until(&last_wakeup, INTERVAL);
 	printf("Temperature: %i°C\n", read_temperature());
-	last_wakeup = xtimer_now();
+	xtimer_usleep_until(&last_wakeup, INTERVAL);
     }
 
     return 0;

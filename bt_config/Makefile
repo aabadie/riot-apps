@@ -7,7 +7,6 @@ BOARD ?= native
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../..
 
-USEMODULE+=xtimer
 USEMODULE+=shell
 FEATURES_REQUIRED += periph_uart
 
