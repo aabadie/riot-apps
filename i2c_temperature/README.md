@@ -32,3 +32,6 @@ visible on `/dev/ttyACM0`)
 gtkterm -p /dev/ttyACM0 -s 115200 -b 8 -e
 ```
 * The temperature measured by the sensor is displayed every 1.5 second.
+
+
+See [troubleshooting](https://github.com/aabadie/riot-apps#troubleshooting) if you have issues when building the application.

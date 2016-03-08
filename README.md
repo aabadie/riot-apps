@@ -92,4 +92,40 @@ sensor from the uart interface.
   [serial to serial](https://github.com/aabadie/riot-apps/tree/master/serial_to_serial)
   and [I2C temperature](https://github.com/aabadie/riot-apps/tree/master/i2c_temperature)
   examples.
-  
+
+
+### Troubleshooting
+
+* Build errors of type:
+`undefined reference to 'i2c_init_master'` (or any
+function from a module added in your Makefile with the `FEATURES_REQUIRED` variable):
+
+Verify that you don't have a read message displayed at the beginning of the
+build:
+
+```
+$ make RIOTBASE=~/work/RIOT BOARD=arduino-due
+There are unsatisfied feature requirements: periph_i2c
+
+
+EXPECT ERRORS!
+[...]
+main.c:62: undefined reference to `i2c_init_master'
+...i2c_temperature/bin/arduino-due/i2c_temperature.a(main.o): In function `read_temperature':
+...i2c_temperature/main.c:37: undefined reference to `i2c_read_bytes'
+collect2: error: ld returned 1 exit statu
+```
+I2C is not yet implemented on arduino-due, so you cannot use `periph_i2c` with
+this board.
+
+
+* Spurious Build errors with module not related to the ones added in your Makefile:
+
+It's possible that previously build your application with some modules and removed
+  some of them in the meantime. Then the build system is still trying to build
+  against them but couldn't find them.
+  The solution is to run in your application directory:
+  ```
+  $ make clean
+  ```
+  or to remove the `bin` directory in the application directory.

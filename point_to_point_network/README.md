@@ -121,3 +121,4 @@ $ make RIOTBASE=~/work/RIOT BOARD=samr21-xpro SERIAL=ATML2127031800004653 flash
   You should now see the temperature messages displayed !! You are on the way of the IoT, Woohoo :)
   
   
+See [troubleshooting](https://github.com/aabadie/riot-apps#troubleshooting) if you have issues when building the application.
