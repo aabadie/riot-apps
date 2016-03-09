@@ -33,15 +33,15 @@
 
 
 static uint32_t last_press;
-static kernel_pid_t idle_thread_pid;
+static kernel_pid_t main_thread_pid;
 
 static void uart_cb(void *dev, char data)
-{   
+{
     printf("\rUART Callback\n");
     gpio_toggle(LED_GPIO);
     msg_t msg;
     msg.content.value = (uint32_t)(NULL);
-    msg_send(&msg, idle_thread_pid);
+    msg_send(&msg, main_thread_pid);
 }
 
 static void gpio_cb(void *pin)
@@ -52,20 +52,27 @@ static void gpio_cb(void *pin)
 	gpio_toggle(LED_GPIO);
 	msg_t msg;
 	msg.content.value = (uint32_t)(NULL);
-	msg_send(&msg, idle_thread_pid);
+	msg_send(&msg, main_thread_pid);
 	last_press = xtimer_now();
     }
 }
 
 int main(void)
 {
-    puts("GPIO to UART sample application\n");
+    printf("GPIO to UART sample application\r\n");
 
+    /* Initialize UART interface */
+    if (uart_init(UART_INTERFACE, BAUDRATE, uart_cb, (void *)NULL) < 0) {
+	printf("Error while initializing UART interface\n");
+	return 1;
+    }
+    printf("UART interface initialized successfuly\n");
+    
     if (gpio_init(LED_GPIO, GPIO_DIR_OUT, GPIO_NOPULL) < 0) {
         puts("Error while initializing LED GPIO as output\n");
         return 1;
     }
-    puts("LED GPIO initialized successfully as output\n");
+    printf("LED GPIO initialized successfully as output\n");
     /* Shutdown on board LED */
     gpio_set(LED_GPIO);
     
@@ -74,20 +81,12 @@ int main(void)
         puts("Error while initializing BUTTON GPIO as external interrupt\n");
         return 1;
     }
-    puts("BUTTON GPIO initialized successfully as external interrupt\n");
-
-    
-    /* Initialize UART interface */
-    if (uart_init(UART_INTERFACE, BAUDRATE, uart_cb, (void *)NULL) < 0) {
-	puts("Error while initializing UART interface\n");
-	return 1;
-    }
-    puts("UART interface initialized successfully\n");
+    printf("BUTTON GPIO initialized successfuly\n");
 
     last_press = xtimer_now();
     
-    /* Get Idle thread pid */
-    idle_thread_pid = thread_getpid();
+    /* Get main thread pid */
+    main_thread_pid = thread_getpid();
     msg_t msg;
     for (;;) {
 	msg_receive(&msg); /* This line blocks the loop until a message is 

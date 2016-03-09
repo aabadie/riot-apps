@@ -34,7 +34,7 @@
 #define I2C_INTERFACE  (0)         /* I2C interface number */
 #define SENSOR_ADDR    (0x48|0x07) /* I2C temperature address on sensor */
 
-static kernel_pid_t idle_thread_pid;
+static kernel_pid_t main_thread_pid;
 
 int read_temperature(void)
 {
@@ -66,7 +66,7 @@ static void uart_cb(void *dev, char data)
     printf("UART Callback, read temperature\n");
     msg_t msg;
     msg.content.value = (uint32_t)(NULL);
-    msg_send(&msg, idle_thread_pid);
+    msg_send(&msg, main_thread_pid);
 }
 
 int main(void)
@@ -86,8 +86,8 @@ int main(void)
     }
     puts("I2C interface initialized successfully\n");
     
-    /* Get Idle thread pid */
-    idle_thread_pid = thread_getpid();
+    /* Get main thread pid */
+    main_thread_pid = thread_getpid();
     msg_t msg;
     for (;;) {
 	msg_receive(&msg); /* This line blocks the loop until a message is 

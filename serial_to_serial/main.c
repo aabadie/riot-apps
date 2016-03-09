@@ -26,17 +26,17 @@
 #define BT_UART  (1)
 #define BAUDRATE (115200U)
 
-static kernel_pid_t idle_thread_pid;
+static kernel_pid_t main_thread_pid;
 
 static void rx_cb(void *uart, char c)
 {
     /* A character was received on an UART interface and triggered
        this callback through an interruption, we forward it via a message
-       to the idle thread. */
+       to the main thread. */
     msg_t msg;
     msg.type = (int)uart;
     msg.content.value = (uint32_t)c;
-    msg_send(&msg, idle_thread_pid);
+    msg_send(&msg, main_thread_pid);
 }
 
 int main(void)
@@ -51,8 +51,8 @@ int main(void)
     /* UART2 : BT terminal */
     uart_init(BT_UART, BAUDRATE, rx_cb, (void *)BT_UART);
 
-    /* Get Idle thread pid */
-    idle_thread_pid = thread_getpid();
+    /* Get main thread pid */
+    main_thread_pid = thread_getpid();
   
     /* Local variable containing the message exchanged between 
        the 2 UART interfaces */
