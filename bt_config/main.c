@@ -110,7 +110,7 @@ static const shell_command_t shell_commands[] = {
 
 int main(void)
 {
-    printf("\nBluetooth module configuration tool\n");
+    printf("Bluetooth module configuration tool\n");
     printf("===================================\n");
 
     /* start the printer thread */
