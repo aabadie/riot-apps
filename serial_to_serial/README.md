@@ -37,22 +37,22 @@ BT module goes to TX pin on the board, and vice versa)
 
 ### Using this application
 
-* Ensure you followed the
+1. Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-* Follow the setup displayed above and plug the board to an USB port of your computer
-* Build and flash:
-```bash
+2. Follow the setup displayed above and plug the board to an USB port of your computer
+3. Build and flash:
+<pre>
 $ cd ~/work/i2c_temperature
 $ make RIOTBASE=~/work/RIOT BOARD=arduino-due flash
-```
-* Start a serial terminal application on your PC (assuming the board is
+</pre>
+4. Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
-```bash
-gtkterm -p /dev/ttyACM0 -s 9600 -b 8 -e
-```
-* Now you can communicate to the other serial Bluetooth interface (using `rfcomm` on Linux or
-a bluetooth terminal application on an Android phone)
-* You can also skip the bluetooth setup hell by using an USB to serial board
+<pre>
+$ gtkterm -p /dev/ttyACM0 -s 9600 -b 8 -e
+</pre>
+5. Now you can communicate to the other serial Bluetooth interface (using `rfcomm` on Linux or
+6. bluetooth terminal application on an Android phone)
+7. You can also skip the bluetooth setup hell by using an USB to serial board
 between the PC and the second UART interface.
 
 

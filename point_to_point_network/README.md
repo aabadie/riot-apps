@@ -50,43 +50,43 @@ For simplicity, the ipv6 address of server is hard coded in the
 client code, so we'll have to determine it for the server board before flashing
 the server code of this example on this board. It's explained in the following steps.
 
-* Ensure you followed the
+1. Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-* Plug the Io1-xplaned-pro extension on the client board
-* Plug the client board to an USB port of your computer
-* Get the information of the boardin the list of connected ttys. We use this
+2. Plug the Io1-xplaned-pro extension on the client board
+3. Plug the client board to an USB port of your computer
+4. Get the information of the boardin the list of connected ttys. We use this
 here to determine the serial identifier and the tty used for the client board:
-```bash
+<pre>
 $ ~/work/RIOT/dist/tools/usb-serial/list-ttys.sh
 /sys/bus/usb/devices/2-1.2.1: Atmel Corp. EDBG CMSIS-DAP serial: 'ATML2127031800004653', tty(s): ttyACM0
-```
-* Plug the server board to another USB port of your computer
-* Get the new list of ttys connected to the boards:
-```bash
+</pre>
+5. Plug the server board to another USB port of your computer
+6. Get the new list of ttys connected to the boards:
+<pre>
 $ ~/work/RIOT/dist/tools/usb-serial/list-ttys.sh
 /sys/bus/usb/devices/2-1.2.1: Atmel Corp. EDBG CMSIS-DAP serial: 'ATML2127031800004653', tty(s): ttyACM0
 /sys/bus/usb/devices/2-1.2.2: Atmel Corp. EDBG CMSIS-DAP serial:
 'ATML2127031800004658', tty(s): ttyACM1
-```
-* Now we can identify both boards:
- * client board has serial identifier __'ATML2127031800004653'__ and is connected
+</pre>
+7. Now we can identify both boards:
+ 1. client board has serial identifier __'ATML2127031800004653'__ and is connected
  to tty __/dev/ttyACM0__
- * server board has serial identifier __'ATML2127031800004658'__ and is connected
+ 2. server board has serial identifier __'ATML2127031800004658'__ and is connected
  to tty __/dev/ttyACM1__
-* We now need to retrieve the server IP (ipv6). To achieve this, let's use the
+8. We now need to retrieve the server IP (ipv6). To achieve this, let's use the
 __gnrc_networking__ example:
-```bash
+<pre>
 $ cp -R ~/work/RIOT/examples/gnrc_networking ~/work/riot-apps/.
 $ cd ~/work/riot-apps/gnrc_networking
-```
-* and flash the server board. Note that we use SERIAL and PORT options
+</pre>
+9. and flash the server board. Note that we use SERIAL and PORT options
 corresponding to the server board:
-```bash
+<pre>
 $ make RIOTBASE=~/work/RIOT BOARD=samr21-xpro SERIAL=ATML2127031800004658
 PORT=/dev/ttyACM1 flash term
-```
-* let's now get the ip address (from the riot-os shell on the board):
-```
+</pre>
+10. let's now get the ip address (from the riot-os shell on the board):
+<pre>
 > ifconfig
 2016-03-01 10:46:36,415 - INFO # Iface  7   HWaddr: 12:9a  Channel: 26  Page: 0  NID: 0x23
 2016-03-01 10:46:36,419 - INFO #            Long HWaddr: 5a:47:3c:7c:49:50:12:9a 
@@ -98,23 +98,23 @@ PORT=/dev/ttyACM1 flash term
 2016-03-01 10:46:36,448 - INFO #            inet6 addr: fe80::5847:3c7c:4950:129a/64  scope: local
 2016-03-01 10:46:36,455 - INFO #            inet6 addr: ff02::1:ff50:129a/128
 scope: local [multicast]
-```
-* The server ip (v6) is __fe80::5847:3c7c:4950:129a__  (it's the line ending
+</pre>
+11. The server ip (v6) is __fe80::5847:3c7c:4950:129a__  (it's the line ending
   with scope: local, you should have a different value). In
   *~/work/riot-apps/point_to_point_network/client_with_sensor/main.c*, replace the value
   __SERVER_PORT__ with the on you just got with *ifconfig*.
-* Let's now flash the server board with our server application
+12. Let's now flash the server board with our server application
 (server_to_terminal or server_to_bluetooth):
-```bash
+<pre>
 $ cd ~/work/riot-apps/point_to_point_network/server_to_bluetooth
 $ make RIOTBASE=~/work/RIOT BOARD=samr21-xpro SERIAL=ATML2127031800004658 flash
-```
-* Let's now flash the client board with our sensor client application:
-```bash
+</pre>
+13. Let's now flash the client board with our sensor client application:
+<pre>
 $ cd ~/work/riot-apps/point_to_point_/client_with_sensor
 $ make RIOTBASE=~/work/RIOT BOARD=samr21-xpro SERIAL=ATML2127031800004653 flash
-```
-* Now all is in place. Simply connect to the UART device plugged on the server
+</pre>
+14. Now all is in place. Simply connect to the UART device plugged on the server
   board (via bluetooth if it's a bluetooth device or using a terminal on the
   right tty if it's a tty to USB device. Note that this UART device should be
   initialized at 115200 bps (value UART_BAUDRATE in the code).

@@ -20,18 +20,18 @@ jumper otherwise the serial debug interface won't work.
 
 ### Using this application
 
-* Ensure you followed the
+1. Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-* Plug the Io1-xplaned-pro extension on the board
-* Plug the board to an USB port of your computer
-* Build and flash:
-```bash
+2. Plug the Io1-xplaned-pro extension on the board
+3. Plug the board to an USB port of your computer
+4. Build and flash:
+<pre>
 $ cd ~/work/i2c_temperature_2
 $ make RIOTBASE=~/work/RIOT flash
-```
-* Start a serial terminal application on your PC (assuming the board is
+</pre>
+5. Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
-```bash
-gtkterm -p /dev/ttyACM0 -s 115200 -b 8 -e
-```
-* The temperature measured by the sensor is displayed each time a key is pressed.
+<pre>
+$ gtkterm -p /dev/ttyACM0 -s 115200 -b 8 -e
+</pre>
+6. The temperature measured by the sensor is displayed each time a key is pressed.
