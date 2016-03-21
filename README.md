@@ -8,7 +8,14 @@ See https://github.com/RIOT-OS/RIOT for more information.
 ### Prerequisites
 
 All samples applications here have been tested with the following setup:
-* Developpement computer running Ubuntu 15.10, Wily Werewolf, 64bits
+* Developpement computer running Ubuntu 15.10, Wily Werewolf, 64bits.
+The login used for flashing the boards must be part of `dialout` and `plugdev`
+groups:
+
+```shell
+$ sudo adduser <login> plugdev dialout
+```
+
 * Tested boards:
   * AVR MCU Family:
     * [Arduino Mega2560](https://github.com/RIOT-OS/RIOT/wiki/Board%3A-Arduino-Mega2560)
@@ -19,29 +26,22 @@ All samples applications here have been tested with the following setup:
 
 There are a few package that needs to be installed on the Ubuntu developpement system.
 
-  1. Common packages
-
-```bash
-sudo apt install build-essential g++-multilib openocd gtkterm
-```
-
-  2. AVR MCU Family
-
-```bash
-sudo apt install gcc-avr gdb-avr avr-libc binutils-avr
-```
-
-  3. ARM MCU Family
-
-```bash
-sudo apt install gcc-arm-none-eabi gdb-arm-none-abi binutils-arm-linux-gnueabi
-```
-
-  4. MSP430 MCU Family (but not tested yet)
-
-```bash
-sudo apt install gcc-msp430 mspdebug msp430-libc binutils-msp430
-```
+1. Common packages
+<pre>
+$ sudo apt install build-essential g++-multilib openocd gtkterm
+</pre>
+2. AVR MCU
+<pre>
+$ sudo apt install gcc-avr gdb-avr avr-libc binutils-avr
+</pre>
+3. ARM MCU Family
+<pre>
+$ sudo apt install gcc-arm-none-eabi gdb-arm-none-abi binutils-arm-linux-gnueabi
+</pre>
+4. MSP430 MCU Family (but not tested yet)
+<pre>
+$ sudo apt install gcc-msp430 mspdebug msp430-libc binutils-msp430
+</pre>
 
 More information is available on the RIOT documentation : https://github.com/RIOT-OS/RIOT/wiki/Introduction#compiling-riot
 
@@ -51,18 +51,15 @@ More information is available on the RIOT documentation : https://github.com/RIO
 We suppose all the code is located in `~/work`.
 
 1. Clone RIOT code (or your fork)
-
-```bash
+<pre>
 $ cd ~/work
 $ git clone git@github.com:RIOT-OS/RIOT.git
-```
-
+</pre>
 2. Clone this repository (or your fork)
-
-```bash
+<pre>
 $ cd ~/work
 $ git clone git@github.com:aabadie/riot-apps.git
-```
+</pre>
 
 ### Samples
 
@@ -96,36 +93,29 @@ sensor from the uart interface.
 
 ### Troubleshooting
 
-* Build errors of type:
+1. Build errors of type:
 `undefined reference to 'i2c_init_master'` (or any
 function from a module added in your Makefile with the `FEATURES_REQUIRED` variable):
-
 Verify that you don't have a read message displayed at the beginning of the
 build:
-
-```
+<pre>
 $ make RIOTBASE=~/work/RIOT BOARD=arduino-due
 There are unsatisfied feature requirements: periph_i2c
-
-
 EXPECT ERRORS!
 [...]
 main.c:62: undefined reference to `i2c_init_master'
 ...i2c_temperature/bin/arduino-due/i2c_temperature.a(main.o): In function `read_temperature':
 ...i2c_temperature/main.c:37: undefined reference to `i2c_read_bytes'
-collect2: error: ld returned 1 exit statu
-```
+collect2: error: ld returned 1 exit status
+</pre>
 I2C is not yet implemented on arduino-due, so you cannot use `periph_i2c` with
 this board.
 
-
-* Spurious Build errors with module not related to the ones added in your Makefile:
-
-It's possible that previously build your application with some modules and removed
-  some of them in the meantime. Then the build system is still trying to build
-  against them but couldn't find them.
-  The solution is to run in your application directory:
-  ```
+2. Spurious Build errors with module not related to the ones added in your Makefile:
+It's possible that you previously built your application with some modules and removed
+  some of them after. Then the build system is still trying to build
+  against them but they couldn't be found.
+  The solution is to first clean the build in your application directory:
+  <pre>
   $ make clean
-  ```
-  or to remove the `bin` directory in the application directory.
+  </pre>
