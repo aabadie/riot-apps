@@ -43,40 +43,40 @@ BT module goes to TX pin on the board, and vice versa)
 
 ### Using this application
 
-* Ensure you followed the
+1. Ensure you followed the
 [prerequisites](https://github.com/aabadie/riot-apps#prerequisites) first
-* Follow the setup displayed above and plug the board to an USB port of your computer
-* Build and flash:
-```bash
+2. Follow the setup displayed above and plug the board to an USB port of your computer
+3. Build and flash:
+<pre>
 $ cd ~/work/i2c_temperature
 $ make RIOTBASE=~/work/RIOT BOARD=arduino-due flash
-```
-* Start a serial terminal application on your PC (assuming the board is
+</pre>
+4. Start a serial terminal application on your PC (assuming the board is
 visible on `/dev/ttyACM0`)
-```bash
+<pre>
 gtkterm -p /dev/ttyACM0 -s 115200 -e -b 8
-```
-* In the RIOT-OS shell, type `help` to list the available commands.
-* By default the RN42 works at 115200 bps and the configuration mode is launched
+</pre>
+5. In the RIOT-OS shell, type `help` to list the available commands.
+6. By default the RN42 works at 115200 bps and the configuration mode is launched
 with the `$$$` string. Simply use `init` following command to switch the module in
 config mode:
-```bash
+<pre>
 > init 115200 $$$
-```
-* Then, you can list and change some settings using the `send` command:
-```bash
+</pre>
+7. Then, you can list and change some settings using the `send` command:
+<pre>
 # show the list of basic settings:
 > send D
 # show the list of advanced settings:
 > send E
 # set a new name:
 > send SN,<new_name>
-```
-* Once done, the module needs to be rebooted (some settings change may require this):
-```bash
+</pre>
+8. Once done, the module needs to be rebooted (some settings change may require this):
+<pre>
 > send R,1
-```
-* If you just want to quit the configuration mode:
-```bash
+</pre>
+9. If you just want to quit the configuration mode:
+<pre>
 > send ---
-```
+</pre>
