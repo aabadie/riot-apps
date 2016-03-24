@@ -31,7 +31,7 @@
 #define UART_INTERFACE UART_DEV(0) /* read and print on UART 0 */
 #define BAUDRATE       (115200U)
 
-#define I2C_INTERFACE  (0)         /* I2C interface number */
+#define I2C_INTERFACE  I2C_DEV(0)  /* I2C interface number */
 #define SENSOR_ADDR    (0x48|0x07) /* I2C temperature address on sensor */
 
 static kernel_pid_t main_thread_pid;

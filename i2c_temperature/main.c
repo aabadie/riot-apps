@@ -25,7 +25,7 @@
 #include "periph_conf.h"
 #include "periph/i2c.h"
 
-#define I2C_INTERFACE (0)           /* I2C interface number */
+#define I2C_INTERFACE I2C_DEV(0)    /* I2C interface number */
 #define SENSOR_ADDR   (0x48 | 0x07) /* I2C temperature address on sensor */
 #define INTERVAL      (5000000U)    /* set interval to 5 seconds */
 
