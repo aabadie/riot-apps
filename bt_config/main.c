@@ -23,7 +23,7 @@
 #include "thread.h"
 #include "periph/uart.h"
 
-#define BT_UART             (1)    /* use the second UART to communicate with BT module */
+#define BT_UART             UART_DEV(1)    /* use the second UART to communicate with BT module */
 #define SHELL_BUFSIZE       (128U)
 
 #define PRINTER_PRIO        (THREAD_PRIORITY_MAIN - 1)
@@ -31,7 +31,7 @@
 static kernel_pid_t printer_pid;
 static char printer_stack[THREAD_STACKSIZE_MAIN];
 
-static void rx_cb(void *uart, char c)
+static void rx_cb(void *uart, uint8_t c)
 {
     /* A character was received on an UART interface and triggered
        this callback through an interruption, we forward it via a message

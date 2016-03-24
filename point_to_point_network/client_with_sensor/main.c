@@ -62,9 +62,9 @@ static int read_temperature(void)
 static void blink_led(void)
 {
     uint32_t now = xtimer_now();
-    LED_TOGGLE;
+    LED0_TOGGLE;
     xtimer_usleep_until(&now, 100000);
-    LED_TOGGLE;
+    LED0_TOGGLE;
 }
 
 int main(void)

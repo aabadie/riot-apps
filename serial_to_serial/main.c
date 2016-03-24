@@ -22,13 +22,13 @@
 #include "thread.h"
 #include "periph/uart.h"
 
-#define PC_UART  (0)
-#define BT_UART  (1)
+#define PC_UART  UART_DEV(0)
+#define BT_UART  UART_DEV(1)
 #define BAUDRATE (115200U)
 
 static kernel_pid_t main_thread_pid;
 
-static void rx_cb(void *uart, char c)
+static void rx_cb(void *uart, uint8_t c)
 {
     /* A character was received on an UART interface and triggered
        this callback through an interruption, we forward it via a message

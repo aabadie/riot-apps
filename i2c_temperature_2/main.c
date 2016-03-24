@@ -28,7 +28,7 @@
 #include "periph/uart.h"
 #include "periph/i2c.h"
 
-#define UART_INTERFACE (0)       /* read and print on UART 0 */
+#define UART_INTERFACE UART_DEV(0) /* read and print on UART 0 */
 #define BAUDRATE       (115200U)
 
 #define I2C_INTERFACE  (0)         /* I2C interface number */
@@ -61,7 +61,7 @@ int read_temperature(void)
     return (int)temperature;
 }
 
-static void uart_cb(void *dev, char data)
+static void uart_cb(void *dev, uint8_t data)
 {
     printf("UART Callback, read temperature\n");
     msg_t msg;

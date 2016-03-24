@@ -26,12 +26,12 @@
 #include "thread.h"
 #include "xtimer.h"
 
-#define UART_INTERFACE        (1)       /* RIOT UART interface number */
-#define UART_BAUDRATE         (115200U) /* UART interface speed */
-#define MAIN_MSG_QUEUE_SIZE   (8)       /* message queue size of the main thread */
-#define SERVER_MSG_QUEUE_SIZE (32)      /* message queue size of the server thread */
-#define SERVER_BUFFER_SIZE    (32)      /* max size of the buffer where incoming data is stored  */
-#define MAX_MESSAGE_SIZE      (64)      /* max size of the forwarded message */
+#define UART_INTERFACE        UART_DEV(1) /* RIOT UART interface number */
+#define UART_BAUDRATE         (115200U)   /* UART interface speed */
+#define MAIN_MSG_QUEUE_SIZE   (8)         /* message queue size of the main thread */
+#define SERVER_MSG_QUEUE_SIZE (32)        /* message queue size of the server thread */
+#define SERVER_BUFFER_SIZE    (32)        /* max size of the buffer where incoming data is stored  */
+#define MAX_MESSAGE_SIZE      (64)        /* max size of the forwarded message */
 
 static msg_t main_msg_queue[MAIN_MSG_QUEUE_SIZE];
 static uint16_t SERVER_PORT=8000;
@@ -83,7 +83,7 @@ static void *server_thread(void *args)
 
 /* dummy uart callback function, just to avoid a crash a char is received on
    this interface */
-static void rx_cb(void *uart, char c) {}
+static void rx_cb(void *uart, uint8_t c) {}
 
 int main(void)
 {

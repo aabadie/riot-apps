@@ -28,14 +28,15 @@
 #include "periph/gpio.h"
 #include "periph/uart.h"
 
-#define UART_INTERFACE 0
+#define UART_INTERFACE UART_DEV(0)
 #define BAUDRATE (115200U)
 
+#define LED_GPIO LED0_PIN
 
 static uint32_t last_press;
 static kernel_pid_t main_thread_pid;
 
-static void uart_cb(void *dev, char data)
+static void uart_cb(void *dev, uint8_t data)
 {
     printf("\rUART Callback\n");
     gpio_toggle(LED_GPIO);
@@ -68,7 +69,7 @@ int main(void)
     }
     printf("UART interface initialized successfuly\n");
     
-    if (gpio_init(LED_GPIO, GPIO_DIR_OUT, GPIO_NOPULL) < 0) {
+    if (gpio_init(LED_GPIO, GPIO_OUT) < 0) {
         puts("Error while initializing LED GPIO as output\n");
         return 1;
     }
@@ -76,7 +77,7 @@ int main(void)
     /* Shutdown on board LED */
     gpio_set(LED_GPIO);
     
-    if (gpio_init_int(BUTTON_GPIO, GPIO_PULLUP, GPIO_RISING, gpio_cb,
+    if (gpio_init_int(BUTTON_GPIO, GPIO_IN_PU, GPIO_RISING, gpio_cb,
 		      (void *)BUTTON_GPIO) < 0) {
         puts("Error while initializing BUTTON GPIO as external interrupt\n");
         return 1;
