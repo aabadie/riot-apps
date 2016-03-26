@@ -8,8 +8,7 @@ BOARD_WHITELIST := samr21-xpro
 FEATURES_REQUIRED += periph_uart
 # Include packages that pull up and auto-init the link layer.
 # NOTE: 6LoWPAN will be included if IEEE802.15.4 devices are present
-USEMODULE += gnrc_netif_default
-USEMODULE += auto_init_gnrc_netif
+USEMODULE += gnrc_netdev_default
 # Specify the mandatory networking modules for IPv6 and UDP
 USEMODULE += gnrc_ipv6_default
 USEMODULE += gnrc_conn_udp
