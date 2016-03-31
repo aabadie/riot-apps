@@ -6,9 +6,9 @@ interface to a server node. The received packet is then forwarded by the server
 node to one of its UART interface making this node a router from 6LowPan to
 UART.
 Two implementations of the server node are provided by this example:
-* [Server to terminal](https://github.com/aabadie/riot-apps/tree/master/point_to_point_server/server_to_terminal):
+* [Server to terminal](https://github.com/aabadie/riot-apps/tree/master/point_to_point_network/server_to_terminal):
   messages received by the server node are forwarded to the debug console (UART 0)
-* [Server to bluetooth](https://github.com/aabadie/riot-apps/tree/master/point_to_point_server/server_to_bluetooth):
+* [Server to bluetooth](https://github.com/aabadie/riot-apps/tree/master/point_to_point_network/server_to_bluetooth):
   messages received by the server node are forwarded to UART 1 which is
   connected to a Bluetooth module (it can also be a TTL to USB converter).
 
