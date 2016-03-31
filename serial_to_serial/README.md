@@ -30,7 +30,7 @@ bluetooth module but requires the pins to be adapted.
 
 <img src="https://github.com/aabadie/riot-apps/blob/master/serial_to_serial/docs/uart_2_uart_arduino_mega2560_bb.png" width="400">
 
-* Samr21-xpro : use EXT1 pins. RX pin is PA22 and TX is PA23. (Note that RX of
+* Samr21-xpro : use EXT1 pins. RX pin is PA23 and TX is PA22. (Note that RX of
 BT module goes to TX pin on the board, and vice versa)
 * mbed_lpc1768 : RX pin is n°9 and TX is n°10. (Note that RX of
 BT module goes to TX pin on the board, and vice versa)
