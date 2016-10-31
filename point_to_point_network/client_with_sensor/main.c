@@ -49,8 +49,8 @@ static int read_temperature(void)
     int8_t sign = 1;
     /* Check if negative and clear sign bit. */
     if (data & (1 << 15)) {
-	sign *= -1;
-	data &= ~(1 << 15);
+    	sign *= -1;
+	    data &= ~(1 << 15);
     }
     /* Convert to temperature */
     data = (data >> 5);
@@ -61,9 +61,8 @@ static int read_temperature(void)
 
 static void blink_led(void)
 {
-    uint32_t now = xtimer_now();
     LED0_TOGGLE;
-    xtimer_usleep_until(&now, 100000);
+    xtimer_usleep(100000);
     LED0_TOGGLE;
 }
 
@@ -88,27 +87,26 @@ int main(void)
     /* format destination address from string */
     ipv6_addr_t dst;
     if (ipv6_addr_from_str(&dst, SERVER_IP) == NULL) {
-	printf("Error: address not valid '%s'\n", SERVER_IP);
-	return 1;
+        printf("Error: address not valid '%s'\n", SERVER_IP);
+	    return 1;
     }
     
-    uint32_t last_wakeup = xtimer_now();
     char message[MAX_MESSAGE_LENGTH];
     for(;;) {
-	/* Format message to send to to server  */
-	snprintf(message, sizeof(message), "Temperature: %i°C", read_temperature());
+        /* Format message to send to to server  */
+        snprintf(message, sizeof(message), "Temperature: %i°C", read_temperature());
 
-	/* checking the node is alive with a blinking led */
-	blink_led();
+        /* checking the node is alive with a blinking led */
+	    blink_led();
 
-	/* send data to server */
-	if (conn_udp_sendto(message, strlen(message), NULL, 0, (struct sockaddr *)&dst,
-			    sizeof(dst), AF_INET6, (uint16_t)0, SERVER_PORT) < 0) {
-	    printf("Error: couldn't send message '%s' to address '%s'\n", message, SERVER_IP);
-	}
+	    /* send data to server */
+    	if (conn_udp_sendto(message, strlen(message), NULL, 0, (struct sockaddr *)&dst,
+		        sizeof(dst), AF_INET6, (uint16_t)0, SERVER_PORT) < 0) {
+    	    printf("Error: couldn't send message '%s' to address '%s'\n", message, SERVER_IP);
+	    }
 
-	/* wait 5 seconds */
-	xtimer_usleep_until(&last_wakeup, INTERVAL);
+    	/* wait 5 seconds */
+	    xtimer_usleep(INTERVAL);
     }
 
     return 0;

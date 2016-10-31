@@ -72,10 +72,9 @@ int main(void)
         printf("I2C interface %i successfully initialized as master!\n", I2C_INTERFACE);
     }
     
-    uint32_t last_wakeup = xtimer_now();
     for (;;) {
 	printf("Temperature: %i°C\n", read_temperature());
-	xtimer_usleep_until(&last_wakeup, INTERVAL);
+	xtimer_usleep(INTERVAL);
     }
 
     return 0;
