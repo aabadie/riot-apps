@@ -35,7 +35,7 @@ static void rx_cb(void *uart, uint8_t c)
 {
     /* A character was received on an UART interface and triggered
        this callback through an interruption, we forward it via a message
-       to the idle thread. */
+       to the printer thread. */
     msg_t msg;
     msg.type = (int)uart;
     msg.content.value = (uint32_t)c;
@@ -45,17 +45,17 @@ static void rx_cb(void *uart, uint8_t c)
 static void *printer(void *arg)
 {
     (void)arg;
-    
-    /* Local variable containing the message exchanged between 
+
+    /* Local variable containing the message exchanged between
        the 2 UART interfaces */
     msg_t msg;
     msg_t msg_queue[8];
     msg_init_queue(msg_queue, 8);
     for (;;) {
-	/* Next line blocks the loop until a message is received on the idle 
-	   thread */
-	msg_receive(&msg);
-	printf("%c", (char)msg.content.value);
+        /* Next line blocks the loop until a message is received on the idle
+           thread */
+        msg_receive(&msg);
+        printf("%c", (char)msg.content.value);
     }
 
     /* this should never be reached */
@@ -92,12 +92,12 @@ static int cmd_init(int argc, char **argv)
 }
 
 static int cmd_send(int argc, char **argv)
-{   
+{
     if (argc < 2) {
         printf("Usage: %s <command>\n", argv[0]);
         return 1;
     }
-    
+
     uart_write(BT_UART, (uint8_t *)strcat(argv[1], "\r\n"), strlen(argv[1]) + 2);
     return 0;
 }
