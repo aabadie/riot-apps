@@ -11,6 +11,12 @@ USEMODULE += xtimer
 FEATURES_REQUIRED += periph_gpio
 FEATURES_REQUIRED += periph_uart
 
+# You can use another pin by simply replacing LED0_PIN
+# with "GPIO_PIN\(<port>, <pin>\)", set <port> and <pin>
+# to your needs.
+LED_GPIO ?= LED0_PIN
+CFLAGS += -DLED_GPIO=$(LED_GPIO)
+
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:

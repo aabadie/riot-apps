@@ -31,7 +31,9 @@
 #define UART_INTERFACE UART_DEV(0)
 #define BAUDRATE (115200U)
 
+#ifndef LED_GPIO
 #define LED_GPIO LED0_PIN
+#endif
 
 static uint32_t last_press;
 static kernel_pid_t main_thread_pid;
@@ -74,8 +76,8 @@ int main(void)
         return 1;
     }
     printf("LED GPIO initialized successfully as output\n");
-    /* Shutdown on board LED */
-    gpio_set(LED_GPIO);
+    /* Shutdown LED */
+    gpio_clear(LED_GPIO);
 
     if (gpio_init_int(BUTTON_GPIO, GPIO_IN_PU, GPIO_RISING, gpio_cb,
                       (void *)BUTTON_GPIO) < 0) {
@@ -92,7 +94,7 @@ int main(void)
     for (;;) {
         msg_receive(&msg); /* This line blocks the loop until a message is
                               received. */
-        printf("Message received, LED is %s\n", !gpio_read(LED_GPIO)? "ON" : "OFF");
+        printf("Message received, LED is %s\n", gpio_read(LED_GPIO)? "ON" : "OFF");
     }
 
     return 0;

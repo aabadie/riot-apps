@@ -32,6 +32,6 @@ visible on `/dev/ttyACM0`)
 <pre>
 $ gtkterm -p /dev/ttyACM0 -s 9600 -e -b 8
 </pre>
-5. Press the on-board button : this toggles the LED status.
+5. Press the on-board button: this toggles the LED status.
 6. Type some character in the serial terminal: each typed character toggles the
    LED status
